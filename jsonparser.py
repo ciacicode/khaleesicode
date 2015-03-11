@@ -1,5 +1,5 @@
 import json
-import urllib2
+from urllib2 import urlopen
 
 def fciResources(data):
     '''
@@ -7,7 +7,8 @@ def fciResources(data):
         output dict
         { '<area>': {'last_modified', 'url':}}
     '''
-    jsonSimple = json.load(data)
+    readData = urlopen(data)
+    jsonSimple = json.load(readData)
     jsonEncoded = json.dumps(jsonSimple)
     jsonDecoded = json.loads(jsonEncoded)
     resourcesDict={}
