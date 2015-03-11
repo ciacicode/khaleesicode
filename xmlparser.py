@@ -5,6 +5,7 @@ import jsonparser
 
 # json data
 json = 'http://data.gov.uk/api/2/rest/package/uk-food-hygiene-rating-data'
+allAreasData = jsonparser.fciResources(json)
 
 # parse the file with the etree library
 u = urlopen('http://data.gov.uk/data/resource_cache/1e/1e5a0ed1-9c70-4f0d-88ea-c563880dfd44/FHRS519en-GB.xml')
@@ -47,4 +48,4 @@ if count > 0:
 else:
     print ('There are no restaurants in your area.')
             
-allAreasData = jsonparser.fciResources(json)
+
