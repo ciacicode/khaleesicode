@@ -1,5 +1,6 @@
 import MySQLdb
 import jsonparser
+import dbconfig
 
 # json data
 json = 'http://data.gov.uk/api/2/rest/package/uk-food-hygiene-rating-data'
@@ -21,8 +22,7 @@ for key , value in allAreasData.items():
     # write in the database all this stuff
 
     # connect to database
-    db = MySQLdb.connect(host='localhost',user='fci_admin', passwd='FCIChimichanga6*', db = 'fci_data');
-    
+    db = MySQLdb.connect(host=dbconfig.host,user=dbconfig.user, passwd= dbconfig.password, db = dbconfig.database);
     # creating cursor object
     cur = db.cursor()
     
@@ -35,37 +35,3 @@ for key , value in allAreasData.items():
     db.close()
     
     
-areasDict = {
-'Barking and Dagenham':['IG11','RM5','RM8','RM9', 'RM10','RM6','RM7'],
-'Barnet':['EN4','EN5','NW7','NW4','NW11','NW12','NW2','NW9','HA8','N11','N2'],
-'Bexley':['DA5','DA6','DA7'],
-'Brent':[],
-'Bromley' :['BR1','BR2'],
-'Camden':[],
-'Croydon':[],
-'Ealing':[],
-'Enfield':['EN1','EN2','EN3'],
-'Greenwich':[],
-'Hackney':[],
-'Hammersmith and Fulham':[],
-'Haringey':[],
-'Harrow':[],
-'Hillingdon':[],
-'Havering':[],
-'Hounslow':[],
-'Islington':[],
-'Kensington and Chelsea':[],
-'Kingston-Upon-Thhames':[],
-'Lambeth':[],
-'Lewisham':[],
-'London (City of)':[],
-'Merton':[],
-'Redbridge':[],
-'Richmond-Upon-Thames':[],
-'Southwark':[],
-'Sutton':[],
-'Tower Hamlets':[],
-'Waltham Forest':[],
-'Wandsworth':[],
-'Westminster':[]
-    }
