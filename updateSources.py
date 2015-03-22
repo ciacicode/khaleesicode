@@ -1,13 +1,26 @@
 import MySQLdb
-import jsonparser
+import fciResources
 import dbconfig
 
 # json data
 json = 'http://data.gov.uk/api/2/rest/package/uk-food-hygiene-rating-data'
-allAreasData = jsonparser.fciResources(json)
+allAreasData = fciResources.fciResources(json)
+
+'''This script aims to update all database tables so to provide a fresh data set'''
+
+db = MySQLdb.connect(host=dbconfig.host,user=dbconfig.user, passwd= dbconfig.password, db = dbconfig.database);
+# creating cursor object
+cur = db.cursor()
+    
+# execute insert query
+cur.execute('TRUNCATE TABLE fci_data.sources')
+# commit query and close
+    
+db.commit()
+db.close()
 
 
-# loop through the dictionary and store the data in the database
+# loop through the dictionary and store the xml data in the database
 
 dbID = 0
 for key , value in allAreasData.items():
@@ -34,4 +47,9 @@ for key , value in allAreasData.items():
     db.commit()
     db.close()
     
+
+
+    
+
+
     
