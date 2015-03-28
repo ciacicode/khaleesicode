@@ -27,7 +27,8 @@ cur.execute('SELECT Area, URL FROM fci_data.sources')
 for area, url in cur.fetchall():
     # pass the url to an xmlparser function
     tempDict = fciUtils.postcodesDict(url,area)
-    iterable = tempDict.values()
+    valueList = tempDict.values()
+    iterable = valueList[0]
     # parse the dict and write into database
     for value in iterable:
         # execute insert query
