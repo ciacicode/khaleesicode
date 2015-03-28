@@ -13,7 +13,7 @@ collection = root.find('EstablishmentCollection')
 zipInput = raw_input('What is your zip code? ')
 # need to ensure the zipInput is correctly formatted
 
-zoneInput = fciUtils.zipToArea(zipInput)
+zoneInput = fciUtils.postToArea(zipInput)
 
 increment = 0
 count = 0.00
@@ -21,7 +21,7 @@ count = 0.00
 for detail in collection.findall('EstablishmentDetail'):
     postCode = detail.findtext('PostCode')
     if postCode is not None:
-        zoneXML = fciUtils.zipToArea(postCode)
+        zoneXML = fciUtils.postToArea(postCode)
         if zoneInput == zoneXML:
             rating = detail.find('RatingValue').text
             if rating != 'Exempt' and rating != 'AwaitingInspection':

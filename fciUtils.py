@@ -8,18 +8,25 @@ import xml.etree.ElementTree as ET
 from urllib import urlopen
 from xml.etree.ElementTree import parse
 import json
-
+import re
 
 def zipToArea(zip):
     '''takes a zip code, cleans it and returns the area code'''
     zip = zip.upper()
-    zip = zip.replace(" ","");
+    zip = zip.replace(" ","")
     inputLength = len(zip)
     if inputLength >= 3:
         zoneInput = zip[:inputLength-3]
     else:
         zoneInput = zip
-    return zoneInput  
+    return zoneInput
+
+def postToArea(postcode):
+    '''takes a postcode, returns area code'''
+    postcode = postcode.upper()
+    splice = re.split(',| ',postcode)
+    return splice[0]
+      
 
 def postcodesDict (url, areaName):
     ''' takes url of xml and area name
@@ -36,7 +43,7 @@ def postcodesDict (url, areaName):
     for detail in collection.findall('EstablishmentDetail'):
         postCode = detail.findtext('PostCode')
         if postCode is not None:
-            zonePostcode = zipToArea(postCode)
+            zonePostcode = postToArea(postCode)
             #add postcodes to nested list
             nestList.append(zonePostcode)     
         
