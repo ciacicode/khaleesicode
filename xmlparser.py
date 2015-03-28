@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 from urllib import urlopen
 from xml.etree.ElementTree import parse
+import fciUtils
 
 
 # parse the file with the etree library
@@ -12,15 +13,7 @@ collection = root.find('EstablishmentCollection')
 zipInput = raw_input('What is your zip code? ')
 # need to ensure the zipInput is correctly formatted
 
-def zipToArea(zip):
-    "takes a zip code, cleans it and returns the area code"
-    zip = zip.upper()
-    zip = zip.replace(" ","");
-    inputLength = len(zip)
-    zoneInput = zip[:inputLength-3]
-    return zoneInput
-
-zoneInput = zipToArea(zipInput)
+zoneInput = fciUtils.zipToArea(zipInput)
 
 increment = 0
 count = 0.00
@@ -28,7 +21,7 @@ count = 0.00
 for detail in collection.findall('EstablishmentDetail'):
     postCode = detail.findtext('PostCode')
     if postCode is not None:
-        zoneXML = zipToArea(postCode)
+        zoneXML = fciUtils.zipToArea(postCode)
         if zoneInput == zoneXML:
             rating = detail.find('RatingValue').text
             if rating != 'Exempt' and rating != 'AwaitingInspection':

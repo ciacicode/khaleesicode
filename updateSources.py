@@ -1,10 +1,10 @@
 import MySQLdb
-import fciResources
+import fciUtils
 import dbconfig
 
 # json data
 json = 'http://data.gov.uk/api/2/rest/package/uk-food-hygiene-rating-data'
-allAreasData = fciResources.fciResources(json)
+allAreasData = fciUtils.resourcesDict(json)
 
 '''This script aims to update all database tables so to provide a fresh data set'''
 
