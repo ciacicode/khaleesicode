@@ -1,16 +1,37 @@
-FCI
+#FCI
 
 This is a python project to create an application that calculates a London area's Fried Chicken Index (FCI).
 The FCI is calculated based on instances of fried chicken shops and their hygiene rating in the area.
 
-List of modules
-* jsonparser.py
-* xmlparser.py
+## Requirements
+python 2.7
+flask
+MySQL
 
-jsonparse.py
+## Databases
+* fci_data.sources
+* fci_data.postcodes
+* fci_data.ordered_postcodes
 
-This module includes a function called fciResources that takes the Food Hygiene Rating API's json response and creates a python dictionary containing the URLs of all xml resources available per London area.
+## List of custom libraries
+* fci Utils.py
+
+## List of files
+fci.py
+Main application for flask frontend.
+
+orderedPostcodes.py
+Script to sort postcodes in alphabetical order for better faster search.
+
+updatePostcodes.py
+Script to update postcodes
+
+updateSources.py
+Script to download all necessary URLs containing xml files with hygiene rating information
 
 xmlparser.py
+Legacy main app, will be phased out to handle FCI calculation to then serve it to the front-end
 
-This is the core of the application for the moment but it is likely to be separated from the rest to make the application more sustainable. Xml parser parses a specific area's xml data with hygiene rating information and then calculates a weighted average of the area's hygiene ratings of restaurants.
+
+
+

@@ -40,5 +40,5 @@ for area, url in cur.fetchall():
             # commit query
             db.commit()
             # close connection
+
 db.close()
-    
