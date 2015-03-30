@@ -1,5 +1,6 @@
 dbconfig.py
 jsonparser.pyc
 dbconfig.pyc
-.idea
-venv
+fciUtils.pyc
+.idea/
+venv/
