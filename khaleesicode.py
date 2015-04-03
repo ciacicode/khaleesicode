@@ -8,18 +8,9 @@ app.debug = True
 def index():
   return render_template('layout.html')
 
-@app.route('/version')
-def version():
-  return render_template('version.html')
-
 @app.route('/fci')
 def fci_form():
 	return render_template('fci_form.html')
-
-def clever_version():
-  return "Flask version : %s" % __version__
-app.jinja_env.globals.update(clever_version=clever_version)
-
 
 if __name__ == '__main__':
   app.run()
