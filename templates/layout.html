@@ -1,13 +1,23 @@
-<!DOCTYPE HTML>
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='pure.css') }}">
+    <title>Khaleesicode</title>
+  </head>
+  <body>
+    <nav>
+    	<ul>
+    		<li> <a href="{{ url_for('index') }}">Home</a></li>
+    		<li> <a href="{{ url_for('version') }}">Version</a></li>
+    		<li> <a href="{{ url_for('fci_form') }}">FCI</a></li>
+    	</ul>
+    </nav>
+    <div>
+    	{% block content %} {% endblock %}
+    </div>
+  </body>
+</html>
 
-<title>FCI</title>
-<link rel='stylesheet' type="text/css" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-<div class="page">
-	<h1>Fried Chicken Index</h1>
-	<p>This app returns the Fried Chicken Index for the inserted postcode area</p>
-	<form>
-		Input postcode: <br>
-		<Input type='text' name='inputPostCode'><br>
-		<button type="button">Submit</button>
-	</form>
-</div>
+
+
+	
