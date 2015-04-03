@@ -1,5 +1,5 @@
 import MySQLdb
-import dbconfig
+import config
 import fciUtils
 import pdb
 
@@ -7,7 +7,7 @@ import pdb
 # parse the file with the etree library
 
 # connect to database
-db = MySQLdb.connect(host=dbconfig.host,user=dbconfig.user, passwd= dbconfig.password, db = dbconfig.database);
+db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.database);
 # creating cursor object
 cur = db.cursor()
 cur.execute('TRUNCATE TABLE fci_data.postcodes')
@@ -17,7 +17,7 @@ db.commit()
 db.close()
 
 # connect to database
-db = MySQLdb.connect(host=dbconfig.host,user=dbconfig.user, passwd= dbconfig.password, db = dbconfig.database);
+db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.database);
 # creating cursor object
 cur = db.cursor()
         

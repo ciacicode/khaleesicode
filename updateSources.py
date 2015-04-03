@@ -1,6 +1,6 @@
 import MySQLdb
 import fciUtils
-import dbconfig
+import config
 
 # json data
 json = 'http://data.gov.uk/api/2/rest/package/uk-food-hygiene-rating-data'
@@ -8,7 +8,7 @@ allAreasData = fciUtils.resourcesDict(json)
 
 '''This script aims to update all database tables so to provide a fresh data set'''
 
-db = MySQLdb.connect(host=dbconfig.host,user=dbconfig.user, passwd= dbconfig.password, db = dbconfig.database);
+db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.database);
 # creating cursor object
 cur = db.cursor()
     
@@ -35,7 +35,7 @@ for key , value in allAreasData.items():
     # write in the database all this stuff
 
     # connect to database
-    db = MySQLdb.connect(host=dbconfig.host,user=dbconfig.user, passwd= dbconfig.password, db = dbconfig.database);
+    db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.database);
     # creating cursor object
     cur = db.cursor()
     

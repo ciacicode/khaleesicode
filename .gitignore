@@ -60,4 +60,4 @@ docs/_build/
 target/
 
 # Database details
-dbconfig.py
+config.py
