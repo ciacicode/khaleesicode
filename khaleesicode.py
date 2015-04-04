@@ -5,6 +5,7 @@ import os
 import config
 import fciUtils
 import pdb
+#pdb.set_trace()
 app = Flask(__name__)
 app.debug = True
 
@@ -18,10 +19,9 @@ def index():
 
 @app.route('/fci', methods=['GET', 'POST'])
 def fci_form():
-	form = postcode_input()
+	form = postcode_input(request.form)
 	if request.method == 'POST':
 		# handle user input
-		pdb.set_trace()
 		postcode = request.form['postcode']
 		# calculate fci
 		result = fciUtils.fciReturn(postcode)
@@ -32,4 +32,4 @@ def fci_form():
 
 if __name__ == '__main__':
 	app.secret_key = config.secret_key
-	app.run()
+	app.run(threaded=True)
