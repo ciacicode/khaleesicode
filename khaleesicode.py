@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, __version__, url_for, session
 from fci_form import postcode_input
 import os
 import config
+import fciUtils
+import pdb
 app = Flask(__name__)
 app.debug = True
 
@@ -11,7 +13,7 @@ app.debug = True
 
 @app.route('/')
 def index():
-  return render_template('layout.html')
+  return render_template('home.html')
 
 
 @app.route('/fci', methods=['GET', 'POST'])
@@ -19,8 +21,11 @@ def fci_form():
 	form = postcode_input()
 	if request.method == 'POST':
 		# handle user input
+		pdb.set_trace()
 		postcode = request.form['postcode']
-		return 'Form posted for %s' % postcode
+		# calculate fci
+		result = fciUtils.fciReturn(postcode)
+		return result
 	elif request.method == 'GET':
 		return render_template('fci_form.html', form = form)
 

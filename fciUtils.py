@@ -1,25 +1,17 @@
 '''
     fciUtils is a set of common functions used in the realm of the project
     
-    by ciacicode & Grutin
+    by ciacicode 
 '''
 
 import xml.etree.ElementTree as ET
 from urllib import urlopen
-from xml.etree.ElementTree import parse
 import json
 import re
+import config
+import MySQLdb
+import pdb
 
-def zipToArea(zip):
-    '''takes a zip code, cleans it and returns the area code'''
-    zip = zip.upper()
-    zip = zip.replace(" ","")
-    inputLength = len(zip)
-    if inputLength >= 3:
-        zoneInput = zip[:inputLength-3]
-    else:
-        zoneInput = zip
-    return zoneInput
 
 def postToArea(postcode):
     '''takes a postcode, returns area code'''
@@ -75,17 +67,92 @@ def resourcesDict(url):
         nestDict['url'] = entry['url']
         resourcesDict[entry['description']] = nestDict
     return resourcesDict
-    
-    
-    
-    
 
-    
-    
-    
+def findXml(postcode):
+    '''
+       input a postcode returns dict of 
+       xml URL of area(s)
+    '''
+    # connect to database
+    pPostcode = postToArea(postcode)
+    db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.database);
+    cur = db.cursor()
+    cur.execute('SELECT Area FROM fci_data.ordered_postcodes WHERE Postcode=(%s)',[pPostcode])
+    db.commit()
+    nestAreaList=[]
+    outputAreaList = []
+    for item in cur.fetchall():
+        nestAreaList.append(item)
+        for i in nestAreaList:
+            for x in i:
+                outputAreaList.append(x)
+    outputAreaList = set(outputAreaList)
+    outputAreaList = list(outputAreaList)
+    # let us find the URLs of the xml data from the
+    outputXmlDict = {}
+    for item in outputAreaList:
+        cur.execute('SELECT URL FROM fci_data.sources WHERE Area =(%s)',[item])
+        db.commit()
+        for entry in cur.fetchall():
+           outputXmlDict[item] = entry    
+    return outputXmlDict
+    db.close()
 
-
+def fciIndex(postcode):
+    '''
+        requires postcode 
+        returns fciindex
+    '''
+    
+    # create fci counter 
+    fciIndex = 0
+    zoneInput = postToArea(postcode)
+    key = 'CHICKEN'
+    xmlDict = findXml(zoneInput)
+    # unpack URLs from xmlDict
+    for value in xmlDict.values():
+        # each value is a tuple
+        # parse the url with the etree library
+        u = urlopen(value[0])
+        tree = ET.parse(u)
+        root = tree.getroot()
+        collection = root.find('EstablishmentCollection')
+        for detail in collection.findall('EstablishmentDetail'):
+            postCode = detail.findtext('PostCode')
+            if postCode is not None:
+                zoneXML = postToArea(postCode)
+                if zoneInput == zoneXML:
+                    businessName = detail.find('BusinessName').text
+                    upperBusinessName = businessName.upper()
+                    if upperBusinessName == '' :
+                        break
+                    elif key in upperBusinessName:
+                        #pdb.set_trace()
+                        fciIndex = fciIndex + 1
+    
+    return fciIndex      
         
-        
-            
-    
+
+def fciReturn(postcode):
+    '''
+    receives postcode
+    returns fci
+    '''
+    # normalise input
+    postcode = postToArea(postcode)
+    # connect to database and create cursor
+    db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.database);
+    cur = db.cursor()
+    # check if there is already an entry in the database for that postcode
+    pdb.set_trace()
+    cur.execute("SELECT FCI FROM fciIndex WHERE Postcode=(%s)", [postcode])
+    db.commit()
+    data = cur.fetchall()
+    data = data[0][0]
+    if data == None:
+        return 'Ther is no FCI data for this area'
+    else:
+        return data
+    db.close()
+
+
