@@ -1,17 +1,27 @@
 {% extends 'layout.html' %}
-{% block form %} 
-<h1>Fried Chicken Index</h1>
+{% block form %}
+<section>
+	<header><h1>Fried Chicken Index</h1><br></header>
 	<form action="{{ url_for('fci_form')}}" method='POST'>
-		<p>Enter your postcode to find out your area's fried chicken index</p>
-		<p>Enter your London postcode</p>
-		{{form.postcode}}
-		{{form.submit(class_="pure-button")}}
-	</form>
+		<p>Ever wondered how attractive is your area? Someone once told me the more fried chicken shops in an area the more dodgy it is. I don't think chicken shops make an area dodgy, but if there are many of them close it is a sign the area is still more affordable for rent and house purchase than others. That's why I created the <strong><em>Fried Chicken Index</em></strong>. If you are curious as to how this is calculated check-it out on <a href="https://github.com/ciacicode/fci">Github</a></p><br>
+		<p>Enter your London postcode:</p>
+		<section>
+			{% if error %}
+			<p class="error"><strong>Error: </strong>{{error}}</p>
+			{% endif %}
+			{{form.csrf_token}}
+			{{form.postcode}}
+			{{form.submit(class_="pure-button")}}	
+		</section>
+	</form>	
+</section> 
+
 {% endblock %}
 
 {% block result %}
-
-	<h2>FCI for {{postcode}} is</h2> <br>
-	<p>{{result}}</p>
-
+	
+	<section>
+		<h4>{{fci}}</h4>	
+	</section>
+	
 {% endblock %}

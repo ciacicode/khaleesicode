@@ -6,6 +6,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Khaleesicode</title>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+          <li> {{message}}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
   </head>
   <body>
   <div class="container">
@@ -18,15 +27,20 @@
       </ul>
     </div>
     </nav>
-  
-    
+
     <div class="row">
-      <div class="two-thirds column">{% block homecontent %}{% endblock %}</div>
-      <div class="one-third column">{% block homemedia %} {% endblock %}</div>
-      <div class="six columns">{% block form %} {% endblock %}</div>
-      <div class="six columns">{% block result %} {% endblock %}</div>
+      <div class="two-thirds column">
+        {% block homecontent %}{% endblock %}
+      </div>
+      <div class="one-third column">
+        {% block homemedia %} {% endblock %}
+      </div>
     </div>
-  </div>
+    <div class="row">
+      <div class="two-thirds column">{% block form %} {% endblock %} </div>
+      <div class="one-third column">{% block result %} {% endblock %}</div>
+    </div>
+    </div>
   </body>
 </html>
 

@@ -138,6 +138,8 @@ def fciReturn(postcode):
     receives postcode
     returns fci
     '''
+
+    
     # normalise input
     postcode = postToArea(postcode)
     # connect to database and create cursor
