@@ -32,12 +32,12 @@ def fci_form():
 			# handle user input
 			postcode = request.form['postcode']
 			# calculate fci
-			fci = fciUtils.fciReturn(postcode)
-			return render_template('fci_form.html',form = form, fci = fci, postcode = postcode)
+			result = fciUtils.fciReturn(postcode)
+			return render_template('fci_form.html',form = form, result = result)
 	elif request.method == 'GET':
 		return render_template('fci_form.html', form = form)
 	else:
-		error = 'Postcode field is required'
+		error = 'Enter a valid postcode'
 		return render_template('fci_form.html', form=form, error=error)
 
 

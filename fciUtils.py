@@ -138,23 +138,22 @@ def fciReturn(postcode):
     receives postcode
     returns fci
     '''
-
-    
     # normalise input
     postcode = postToArea(postcode)
     # connect to database and create cursor
     db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.database);
     cur = db.cursor()
     # check if there is already an entry in the database for that postcode
-    #pdb.set_trace()
+    # pdb.set_trace()
     cur.execute("SELECT FCI FROM fciIndex WHERE Postcode=(%s)", [postcode])
     db.commit()
     data = cur.fetchall()
-    data = data[0]
-    data = data[0]
-    if data == None:
-        return 'Ther is no FCI data for this area'
-    else:
+    if len(data) == 0:
+        error = 'There is no FCI data for this area'
+        return str(error)
+    else:  
+        data = data[0]
+        data = data[0]
         return str(data)
     db.close()
 
