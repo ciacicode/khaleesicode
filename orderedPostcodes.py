@@ -1,3 +1,10 @@
+'''
+	Script to sort postcodes in database
+	
+	by grutin
+'''
+
+
 import MySQLdb
 import config
 import fciUtils

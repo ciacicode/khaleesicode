@@ -1,3 +1,12 @@
+'''
+    script to update the fciIndex table
+
+    by ciacicode
+
+    Note: needs improvement
+'''
+
+
 import fciUtils
 import MySQLdb
 import config

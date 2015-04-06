@@ -1,3 +1,9 @@
+'''
+	Flask app for Khaleesicode.com
+   	by ciacicode
+'''
+
+
 from flask import Flask, render_template, request, __version__, url_for, session, abort, flash, redirect
 # importing the class called postcode_input
 from fci_form import postcode_input
@@ -5,6 +11,7 @@ import os
 import config
 import fciUtils
 import pdb
+
 #pdb.set_trace()
 app = Flask(__name__)
 app.debug = True

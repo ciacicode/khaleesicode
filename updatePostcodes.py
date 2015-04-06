@@ -1,3 +1,13 @@
+'''
+    Script to update the bigger unsorted table of postcodes and areas
+
+    by ciacicode
+    
+'''
+
+
+
+
 import MySQLdb
 import config
 import fciUtils

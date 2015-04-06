@@ -1,36 +1,26 @@
 #FCI
 
 This is a python project to create an application that calculates a London area's Fried Chicken Index (FCI).
-The FCI is calculated based on instances of fried chicken shops and their hygiene rating in the area.
+The FCI is calculated based on instances of fried chicken shops in the area. The front-end of this app is done with Flask
 
 ## Requirements
-python 2.7
-flask
-MySQL
+*python 2.7
+*flask
+*MySQL
 
 ## Databases
 * fci_data.sources
 * fci_data.postcodes
 * fci_data.ordered_postcodes
+* fci_data.fciIndex
 
 ## List of custom libraries
-* fci Utils.py
+* fciUtils.py
 
-## List of files
-fci.py
-Main application for flask frontend.
+The functions included in fciUtils take care of database update and maintenance for the application. There are also small helper functions to normalise input.
 
-orderedPostcodes.py
-Script to sort postcodes in alphabetical order for better faster search.
 
-updatePostcodes.py
-Script to update postcodes
 
-updateSources.py
-Script to download all necessary URLs containing xml files with hygiene rating information
-
-xmlparser.py
-Legacy main app, will be phased out to handle FCI calculation to then serve it to the front-end
 
 
 
