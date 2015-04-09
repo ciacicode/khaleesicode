@@ -15,6 +15,9 @@ import pdb
 #pdb.set_trace()
 app = Flask(__name__)
 app.debug = True
+CSRF_ENABLED = True
+SECRET_KEY = config.secret_key
+app.secret_key = config.secret_key
 
 
 # Views of the app
@@ -43,5 +46,4 @@ def fci_form():
 
 
 if __name__ == '__main__':
-	app.secret_key = config.secret_key
 	app.run(threaded=True)
