@@ -15,17 +15,12 @@ import pdb
 
 def postToArea(postcode):
     '''takes a postcode, returns area code'''
-    # make input upper case
+    # normalise user input
     postcode = postcode.upper()
-    # check if input has space
-    if (' ' in postcode) == True:
-        splice = re.split(',| ',postcode)
-        return splice[0]
-    else:
-        # there is no space in input, take first two chars
-        splice = postcode[:3]
-        return splice
-
+    postcode = re.sub('[\W_]', '', postcode)
+    # remove last three chars for the house
+    postcode = postcode[:-3]
+    return postcode
 
 def postcodesDict (url, areaName):
     ''' takes url of xml and area name
