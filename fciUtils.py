@@ -19,8 +19,12 @@ def postToArea(postcode):
     postcode = postcode.upper()
     postcode = re.sub('[\W_]', '', postcode)
     # remove last three chars for the house
-    postcode = postcode[:-3]
-    return postcode
+    if len(postcode) >= 5:
+        postcode = postcode[:-3]
+        return postcode
+    else:
+        return postcode
+
 
 def postcodesDict (url, areaName):
     ''' takes url of xml and area name
@@ -109,7 +113,8 @@ def fciIndex(postcode):
     # create fci counter
     fciIndex = 0
     zoneInput = postToArea(postcode)
-    key = 'CHICKEN'
+    keys = ("CHICKEN", "CHICK")
+    noKeys = "NANDO"
     xmlDict = findXml(zoneInput)
     # unpack URLs from xmlDict
     for value in xmlDict.values():
@@ -126,11 +131,15 @@ def fciIndex(postcode):
                 if zoneInput == zoneXML:
                     businessName = detail.find('BusinessName').text
                     upperBusinessName = businessName.upper()
-                    if upperBusinessName == '' :
+                    pdb.set_trace()
+                    if upperBusinessName == '':
                         break
-                    elif key in upperBusinessName:
-                        #pdb.set_trace()
-                        fciIndex = fciIndex + 1
+                    elif noKeys in upperBusinessName:
+                        break
+                    else:
+                        for key in  keys:
+                            if key in upperBusinessName:
+                                fciIndex = fciIndex + 1
 
     return fciIndex
 
