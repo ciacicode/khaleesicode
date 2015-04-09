@@ -1,7 +1,7 @@
 '''
     fciUtils is a set of common functions used in the realm of the project
-    
-    by ciacicode 
+
+    by ciacicode
 '''
 
 import xml.etree.ElementTree as ET
@@ -15,10 +15,17 @@ import pdb
 
 def postToArea(postcode):
     '''takes a postcode, returns area code'''
+    # make input upper case
     postcode = postcode.upper()
-    splice = re.split(',| ',postcode)
-    return splice[0]
-      
+    # check if input has space
+    if (' ' in postcode) == True:
+        splice = re.split(',| ',postcode)
+        return splice[0]
+    else:
+        # there is no space in input, take first two chars
+        splice = postcode[:3]
+        return splice
+
 
 def postcodesDict (url, areaName):
     ''' takes url of xml and area name
@@ -29,7 +36,7 @@ def postcodesDict (url, areaName):
     tree = ET.parse(readURL)
     root = tree.getroot()
     collection = root.find('EstablishmentCollection')
-    outputDict = {}  
+    outputDict = {}
     nestList = []
     # iterate through the collection and append area postcode to a list
     for detail in collection.findall('EstablishmentDetail'):
@@ -37,8 +44,8 @@ def postcodesDict (url, areaName):
         if postCode is not None:
             zonePostcode = postToArea(postCode)
             #add postcodes to nested list
-            nestList.append(zonePostcode)     
-        
+            nestList.append(zonePostcode)
+
     #normalise list
     nestList = set(nestList)
     nestList = list(nestList)
@@ -60,7 +67,7 @@ def resourcesDict(url):
         if key == 'resources':
             #dive into the resources
             resourcesList = jsonDecoded['resources']
-                
+
     for entry in resourcesList:
         nestDict = {}
         nestDict['last_modified'] = entry['last_modified']
@@ -70,7 +77,7 @@ def resourcesDict(url):
 
 def findXml(postcode):
     '''
-       input a postcode returns dict of 
+       input a postcode returns dict of
        xml URL of area(s)
     '''
     # connect to database
@@ -94,17 +101,17 @@ def findXml(postcode):
         cur.execute('SELECT URL FROM fci_data.sources WHERE Area =(%s)',[item])
         db.commit()
         for entry in cur.fetchall():
-           outputXmlDict[item] = entry    
+           outputXmlDict[item] = entry
     return outputXmlDict
     db.close()
 
 def fciIndex(postcode):
     '''
-        requires postcode 
+        requires postcode
         returns fciindex
     '''
-    
-    # create fci counter 
+
+    # create fci counter
     fciIndex = 0
     zoneInput = postToArea(postcode)
     key = 'CHICKEN'
@@ -129,9 +136,9 @@ def fciIndex(postcode):
                     elif key in upperBusinessName:
                         #pdb.set_trace()
                         fciIndex = fciIndex + 1
-    
-    return fciIndex      
-        
+
+    return fciIndex
+
 
 def fciReturn(postcode):
     '''
@@ -151,10 +158,8 @@ def fciReturn(postcode):
     if len(data) == 0:
         error = 'There is no FCI data for this area'
         return str(error)
-    else:  
+    else:
         data = data[0]
         data = data[0]
         return str(data)
     db.close()
-
-
