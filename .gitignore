@@ -67,7 +67,6 @@ config.py
 *.png
 *.ico
 =======
-*.ico
 *.png
+*.ico
 >>>>>>> a01ee8671a187fe82f56d645c7a347e44d90ee46
-*.jpg
