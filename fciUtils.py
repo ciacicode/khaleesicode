@@ -81,7 +81,7 @@ def findXml(postcode):
     '''
     # connect to database
     pPostcode = postToArea(postcode)
-    db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.database);
+    db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.databasefci);
     cur = db.cursor()
     cur.execute('SELECT Area FROM fci_data.ordered_postcodes WHERE Postcode=(%s)',[pPostcode])
     db.commit()
@@ -152,7 +152,7 @@ def fciReturn(postcode):
     # normalise input
     postcode = postToArea(postcode)
     # connect to database and create cursor
-    db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.database);
+    db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.databasefci);
     cur = db.cursor()
     # check if there is already an entry in the database for that postcode
     # pdb.set_trace()

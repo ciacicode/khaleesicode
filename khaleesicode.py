@@ -3,21 +3,30 @@
    	by ciacicode
 '''
 
-
-from flask import Flask, render_template, request, __version__, url_for, session, abort, flash, redirect
+import sqlite3
+from flask import Flask, render_template, request,g, url_for, session, abort, flash, redirect
 # importing the class called postcode_input
 from fci_form import postcode_input
 import os
 import config
 import fciUtils
 import pdb
+# config
+CSRF_ENABLED = True
+SECRET_KEY = config.secret_key
+MICROBLOG_SETTINGS = config
+
 
 #pdb.set_trace()
 app = Flask(__name__)
 app.debug = True
-CSRF_ENABLED = True
-SECRET_KEY = config.secret_key
 app.secret_key = config.secret_key
+app.config.from_envvar('MICROBLOG_SETTINGS',silent=True)
+
+# db connections
+def connect_db():
+	return sqlite3.connect(app.config['DATABASE'])
+
 
 
 # Views of the app
