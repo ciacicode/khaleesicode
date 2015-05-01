@@ -29,20 +29,19 @@ def index():
 
 @app.route('/fci', methods=['GET', 'POST'])
 def fci_form():
-	error = None
-	form = postcode_input(request.form)
-	if form.validate_on_submit():
-			# handle user input
-			postcode = request.form['postcode']
-			# calculate fci
-			result = fciUtils.fciReturn(postcode)
-			return render_template('fci_form.html',form = form, result = result)
-	elif request.method == 'GET':
-		return render_template('fci_form.html', form = form)
-	else:
-		error = 'Enter a valid postcode'
+    error = None
+    form = postcode_input(request.form)
+    if form.validate_on_submit():
+        # handle user input
+		postcode = request.form['postcode']
+        # calculate fci
+		result = fciUtils.fci_return(postcode)
+        return render_template('fci_form.html',form = form, result = result)
+    elif request.method == 'GET':
+        return render_template('fci_form.html', form = form)
+    else:
+        error = 'Enter a valid postcode'
 		return render_template('fci_form.html', form=form, error=error)
-
 
 
 if __name__ == '__main__':
