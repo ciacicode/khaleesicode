@@ -9,7 +9,7 @@ from urllib import urlopen
 import json
 import re
 import config
-import MySQLdb
+import pymysql
 import pdb
 
 
@@ -25,6 +25,9 @@ def postToArea(postcode):
     else:
         return postcode
 
+def connect_db_fci():
+    '''function to manage database connection'''
+    return pymysql.connect(host=config.host,user=config.userfci, passwd= config.passwordfci, db = config.databasefci);
 
 def postcodesDict (url, areaName):
     ''' takes url of xml and area name
@@ -81,7 +84,7 @@ def findXml(postcode):
     '''
     # connect to database
     pPostcode = postToArea(postcode)
-    db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.databasefci);
+    db = connect_db_fci()
     cur = db.cursor()
     cur.execute('SELECT Area FROM fci_data.ordered_postcodes WHERE Postcode=(%s)',[pPostcode])
     db.commit()
@@ -131,7 +134,7 @@ def fciIndex(postcode):
                 if zoneInput == zoneXML:
                     businessName = detail.find('BusinessName').text
                     upperBusinessName = businessName.upper()
-                    pdb.set_trace()
+                    #pdb.set_trace()
                     if upperBusinessName == '':
                         break
                     elif noKeys in upperBusinessName:
@@ -152,7 +155,7 @@ def fciReturn(postcode):
     # normalise input
     postcode = postToArea(postcode)
     # connect to database and create cursor
-    db = MySQLdb.connect(host=config.host,user=config.user, passwd= config.password, db = config.databasefci);
+    db = connect_db_fci()
     cur = db.cursor()
     # check if there is already an entry in the database for that postcode
     # pdb.set_trace()

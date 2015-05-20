@@ -10,14 +10,15 @@ from flask import Flask, request, session, g, redirect, url_for, abort, render_t
 from fci_form import postcode_input
 import config
 import fciUtils
+import pdb
 
 # configuration
 
 SECRET_KEY = config.secret_key
 CSRF_ENABLED = True
-DATABASE = '/tmp/flaskr.db'
-USERNAME = 'admin'
-PASSWORD = 'default'
+DATABASE = '/tmp/khaleesicode.db'
+USERNAME = config.bloguser
+PASSWORD = config.blogpass
 
 # create flask app
 app = Flask(__name__)
@@ -76,6 +77,7 @@ def fci_form():
 @app.route('/blog')
 def show_entries():
     cur = g.db.execute('select title, text from entries order by id desc')
+    #pdb.set_trace()
     entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
     return render_template('show_entries.html', entries=entries)
 
@@ -87,7 +89,6 @@ def add_entry():
     g.db.execute('insert into entries (title, text) values (?, ?)',
                  [request.form['title'], request.form['text']])
     g.db.commit()
-    flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
 
 
@@ -101,7 +102,6 @@ def login():
             error = 'Invalid password'
         else:
             session['logged_in'] = True
-            flash('You were logged in')
             return redirect(url_for('show_entries'))
     return render_template('login.html', error=error)
 
@@ -109,7 +109,6 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    flash('You were logged out')
     return redirect(url_for('show_entries'))
 
 
