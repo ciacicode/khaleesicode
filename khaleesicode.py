@@ -69,7 +69,7 @@ def fci_form():
         # handle user input
         postcode = request.form['postcode']
         # calculate fci
-        result = fciUtils.fciReturn(postcode)
+        result = fciUtils.fci_return(postcode)
         return render_template('fci_form.html', form=form, result=result)
     elif request.method == 'GET':
         return render_template('fci_form.html', form=form)
