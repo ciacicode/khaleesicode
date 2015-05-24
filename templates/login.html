@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
 {% block post %}
-  <h2>Login</h2>
-  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-  <form action="{{ url_for('login') }}" method=post>
-    <dl>
-      <dt>Username:
-      <dd><input type=text name=username>
-      <dt>Password:
-      <dd><input type=password name=password>
-      <dd><input type=submit value=Login>
-    </dl>
-  </form>
+  <section>
+      <header><h1>Login</h1><br></header>
+        {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+      <form action="{{ url_for('login') }}" method=post>
+		{{ form.csrf_token }}
+        <p>Username:
+        {{ form.username }}</p>
+        <p>Password:
+        {{ form.password }}</p>
+        <p>{{ form.submit}} </p>
+      </form>
+  </section>
+
 {% endblock %}

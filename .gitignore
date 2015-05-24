@@ -61,6 +61,8 @@ target/
 
 # Database details
 config.py
+microblog.db
+requirements.txt
 
 # Images
 *.png

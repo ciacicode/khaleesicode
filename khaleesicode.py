@@ -3,22 +3,26 @@
    	by ciacicode
 '''
 
+__author__ = 'ciacicode'
 # all the imports
 import sqlite3
 from contextlib import closing
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from fci_form import postcode_input
+from login_form import login_form
 import config
 import fciUtils
 import pdb
 
 # configuration
 
+
 SECRET_KEY = config.secret_key
 CSRF_ENABLED = True
-DATABASE = '/tmp/khaleesicode.db'
+DATABASE = config.databaseblog
 USERNAME = config.bloguser
 PASSWORD = config.blogpass
+
 
 # create flask app
 app = Flask(__name__)
@@ -95,15 +99,20 @@ def add_entry():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
+    form = login_form(request.form)
+    #pdb.set_trace()
     if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
-            error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid password'
-        else:
-            session['logged_in'] = True
-            return redirect(url_for('show_entries'))
-    return render_template('login.html', error=error)
+        if form.validate_on_submit():
+            username = request.form['username']
+            password = request.form['password']
+            if username != app.config['USERNAME']:
+                error = 'Invalid credentials'
+            elif password != app.config['PASSWORD']:
+                error = 'Invalid credentials'
+            else:
+                session['logged_in'] = True
+                return redirect(url_for('show_entries'))
+    return render_template('login.html', form=form, error=error)
 
 
 @app.route('/logout')
