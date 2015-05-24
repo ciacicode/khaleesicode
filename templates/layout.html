@@ -1,23 +1,5 @@
 <!doctype html>
 <html>
-<<<<<<< HEAD
-    <head>
-        <title>Khaleesicode</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-         {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <ul class="flashes">
-              {% for message in messages %}
-              <li> {{message}}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
-=======
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
@@ -43,7 +25,6 @@
       ga('create', 'UA-8562021-3', 'auto');
       ga('send', 'pageview');
    </script>
->>>>>>> deaf0472932a00f6cfca3248477905f24b61826d
   </head>
     <div class="container">
       <div class="navbar-spacer"> </div>
@@ -60,6 +41,7 @@
               {% endif %}
           </ul>
         </div>
+        </nav>
   {% for message in get_flashed_messages() %}
     <div class=flash>{{ message }}</div>
   {% endfor %}
@@ -76,16 +58,12 @@
       </div>
     </div>
     </div>
-<<<<<<< HEAD
     <div class="container">
         <div class="row">
           <div class="two-thirds column">{% block form %} {% endblock %} </div>
           <div class="one-third column">{% block result %} {% endblock %}</div>
         </div>
         </div>
-=======
-
->>>>>>> deaf0472932a00f6cfca3248477905f24b61826d
   </body>
 </html>
 
