@@ -120,6 +120,6 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('show_entries'))
 
-
 if __name__ == '__main__':
-    app.run()
+	app.run(threaded=True)
+
