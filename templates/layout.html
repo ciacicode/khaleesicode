@@ -1,50 +1,61 @@
 <!doctype html>
 <html>
-  <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Khaleesicode</title>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class="flashes">
-          {% for message in messages %}
-          <li> {{message}}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+    <head>
+        <title>Khaleesicode</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+         {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flashes">
+              {% for message in messages %}
+              <li> {{message}}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
   </head>
-  <body>
-  <div class="container">
-  <div class="navbar-spacer"> </div>
-    <nav class="navbar"> 
     <div class="container">
-      <ul class="navbar-list">
-        <li class="navbar-item"> <a class="navbar-link" href="{{ url_for('index') }}">Home</a></li>
-        <li class="navbar-item"> <a class="navbar-link" href="{{ url_for('fci_form') }}">FCI</a></li>
-      </ul>
-    </div>
-    </nav>
+      <div class="navbar-spacer"> </div>
+        <nav class="navbar">
+        <div class="container">
+          <ul class="navbar-list">
+            <li class="navbar-item"> <a class="navbar-link" href="{{ url_for('index') }}">Home</a></li>
+            <li class="navbar-item"> <a class="navbar-link" href="{{ url_for('fci_form') }}">FCI</a></li>
+              <li class="navbar-item"> <a class="navbar-link" href="{{ url_for('show_entries') }}">Blog</a></li>
+              {% if not session.logged_in %}
+                <li class="navbar-item"><a class="navbar-link" href="{{ url_for('login') }}">Log in</a></li>
+              {% else %}
+                <li class="navbar-item"><a class="navbar-link" href="{{ url_for('logout') }}">Log out</a></li>
+              {% endif %}
+          </ul>
+        </div>
+  {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+  {% endfor %}
 
-    <div class="row">
+    </div>
+    <div class="container">
+        <div class="row">
       <div class="two-thirds column">
         {% block homecontent %}{% endblock %}
+          {%block post%}{%endblock%}
       </div>
       <div class="one-third column">
         {% block homemedia %} {% endblock %}
       </div>
     </div>
-    <div class="row">
-      <div class="two-thirds column">{% block form %} {% endblock %} </div>
-      <div class="one-third column">{% block result %} {% endblock %}</div>
     </div>
-    </div>
+    <div class="container">
+        <div class="row">
+          <div class="two-thirds column">{% block form %} {% endblock %} </div>
+          <div class="one-third column">{% block result %} {% endblock %}</div>
+        </div>
+        </div>
   </body>
 </html>
 
 
 
-	
