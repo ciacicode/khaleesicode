@@ -11,11 +11,13 @@
       </dl>
     </form>
   {% endif %}
-  <ul class=entries>
+  <tr class=entries>
   {% for entry in entries %}
-    <h2>{{ entry.title }}</h2>{{ entry.text|safe }}
+    <td><h1>{{ entry.title }}</h1></td>
+    <td><p>{{ entry.text|safe }}</p></td>
   {% else %}
     <em>Unbelievable.  No entries here so far</em>
   {% endfor %}
-  </ul>
+  </tr>
+{{pagination.links}}
 {% endblock %}

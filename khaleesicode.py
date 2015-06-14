@@ -7,11 +7,14 @@ __author__ = 'ciacicode'
 # all the imports
 import sqlite3
 from contextlib import closing
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
+from flask import Flask, request, session, g, redirect, url_for, abort, render_template
 from fci_form import postcode_input
 from login_form import login_form
 import config
 import fciUtils
+import time
+import click
+from flask.ext.paginate import Pagination
 import pdb
 
 # configuration
@@ -22,6 +25,12 @@ CSRF_ENABLED = True
 DATABASE = config.databaseblog
 USERNAME = config.bloguser
 PASSWORD = config.blogpass
+PER_PAGE = 10
+CSS_FRAMEWORK = 'bootstrap3'
+LINK_SIZE = 'sm'
+
+# decide whether or not a single page returns pagination
+SHOW_SINGLE_PAGE = False
 
 
 # create flask app
@@ -80,18 +89,22 @@ def fci_form():
 
 @app.route('/blog')
 def show_entries():
-    cur = g.db.execute('select title, text from entries order by id desc')
+    page, per_page, offset = get_page_items()
+    sql = 'select title, text from entries order by date desc'\
+        .format(offset, per_page)
+    cur = g.db.execute(sql)
     #pdb.set_trace()
     entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
-    return render_template('show_entries.html', entries=entries)
+    pagination = get_pagination(page=page, per_page=per_page, record_name='entries', format_total = True, format_number=True)
+    return render_template('show_entries.html', entries=entries, page = page, per_page = per_page, pagination = pagination)
 
 
 @app.route('/add', methods=['POST'])
 def add_entry():
     if not session.get('logged_in'):
         abort(401)
-    g.db.execute('insert into entries (title, text) values (?, ?)',
-                 [request.form['title'], request.form['text']])
+    g.db.execute('insert into entries (title, text, date) values (?, ?, ?)',
+                 [request.form['title'], request.form['text'], time.strftime('%Y-%m-%d %H:%M:%S')])
     g.db.commit()
     return redirect(url_for('show_entries'))
 
@@ -119,6 +132,40 @@ def login():
 def logout():
     session.pop('logged_in', None)
     return redirect(url_for('show_entries'))
+
+
+# helper functions for pagination
+def get_css_framework():
+    return app.config['CSS_FRAMEWORK']
+
+
+def get_link_size():
+    return app.config['LINK_SIZE']
+
+
+def show_single_page_or_not():
+    return app.config['SHOW_SINGLE_PAGE']
+
+
+def get_page_items():
+    page = int(request.args.get('page', 1))
+    per_page = request.args.get('per_page')
+    if not per_page:
+        per_page = app.config['PER_PAGE']
+    else:
+        per_page = int(per_page)
+
+    offset = (page - 1) * per_page
+    return page, per_page, offset
+
+
+def get_pagination(**kwargs):
+    kwargs.setdefault('record_name', 'records')
+    return Pagination(css_framework=get_css_framework(),
+                      link_size=get_link_size(),
+                      show_single_page=show_single_page_or_not(),
+                      **kwargs
+                      )
 
 if __name__ == '__main__':
 	app.run(threaded=True)
