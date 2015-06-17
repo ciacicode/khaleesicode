@@ -55,6 +55,7 @@ def init_db():
 @app.before_request
 def before_request():
     g.db = connect_db()
+    g.cur = g.db.cursor()
 
 
 @app.teardown_request
@@ -89,14 +90,21 @@ def fci_form():
 
 @app.route('/blog')
 def show_entries():
-    page, per_page, offset = get_page_items()
-    sql = 'select title, text from entries order by date desc'\
-        .format(offset, per_page)
-    cur = g.db.execute(sql)
     #pdb.set_trace()
-    entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
-    pagination = get_pagination(page=page, per_page=per_page, record_name='entries', format_total = True, format_number=True)
-    return render_template('show_entries.html', entries=entries, page = page, per_page = per_page, pagination = pagination)
+    g.cur.execute('select count(*) from entries')
+    total = g.cur.fetchone()[0]
+    page, per_page, offset = get_page_items()
+    sql = 'select title, text from entries order by date desc limit {}, {}'\
+        .format(offset, per_page)
+    g.cur.execute(sql)
+    entries = [dict(title=row[0], text=row[1]) for row in g.cur.fetchall()]
+    pagination = get_pagination(page=page,
+                                per_page=per_page,
+                                record_name='entries',
+                                total=total,
+                                format_total=True,
+                                format_number=True)
+    return render_template('show_entries.html', entries=entries, page=page, per_page=per_page, pagination=pagination)
 
 
 @app.route('/add', methods=['POST'])
@@ -113,7 +121,6 @@ def add_entry():
 def login():
     error = None
     form = login_form(request.form)
-    #pdb.set_trace()
     if request.method == 'POST':
         if form.validate_on_submit():
             username = request.form['username']
@@ -168,5 +175,5 @@ def get_pagination(**kwargs):
                       )
 
 if __name__ == '__main__':
-	app.run(threaded=True)
+	app.run(port=8000)
 
