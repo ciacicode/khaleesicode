@@ -13,7 +13,6 @@ from login_form import login_form
 import config
 import fciUtils
 import time
-import click
 from flask.ext.paginate import Pagination
 import pdb
 
