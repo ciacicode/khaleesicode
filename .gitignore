@@ -25,6 +25,8 @@ var/
 *.
 .idea/
 venv/
+requirements.txt
+requirements.txt~
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
