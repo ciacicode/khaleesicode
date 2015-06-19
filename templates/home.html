@@ -2,7 +2,18 @@
 {% block homecontent %}
 <section>
 	 <header><h1>Welcome to Khaleesicode</h1></header><br>
-	 <p>This is a Flask application that I use to play around with Python code. The only working application at the moment is the <a href="{{ url_for('fci_form') }}">FCI</a>, a silly yet fun app that shows how many Fried Chicken Shops there are in a specific London Postcode.</p>
+	 <p>This is a Flask application that I use to play around with Python code. I will create applications with python
+         and will embed them in this flask site to display them. At the moment there are only two working applications
+         on this site:</p>
+        <ul>
+            <li><a href="{{ url_for('fci_form') }}">FCI</a>, a silly yet fun app that shows how many Fried Chicken Shops there are in a specific London Postcode.</li>
+            <li>A Microblog application</li>
+        </ul>
+     <h1>Roadmap</h1>
+     <p>In terms of roadmap for this site, I will spend some time optimising the application configuration and later on
+         integrate the <a href="https://github.com/ciacicode/sudoku">sudoku</a> solving algorithm, but with a graphical
+         user interface. We shall see.
+     </p>
 </section>
 {% endblock %}
 
