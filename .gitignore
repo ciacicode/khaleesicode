@@ -68,3 +68,7 @@ requirements.txt
 # Images
 *.png
 *.ico
+
+#Cached files
+*.md~
+*.txt~
