@@ -72,3 +72,4 @@ requirements.txt
 #Cached files
 *.md~
 *.txt~
+.gitignore~
