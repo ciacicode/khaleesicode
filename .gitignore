@@ -25,7 +25,6 @@ var/
 *.
 .idea/
 venv/
-requirements.txt
 requirements.txt~
 
 # PyInstaller
@@ -63,7 +62,7 @@ target/
 
 # Database details
 config.py
-microblog.db
+*.db
 requirements.txt
 
 # Images
