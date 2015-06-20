@@ -3,13 +3,14 @@
 
     by ciacicode
 '''
-
+from __future__ import division
 import xml.etree.ElementTree as ET
-from urllib import urlopen
+from urllib2 import urlopen
 import json
 import re
-import config
+import fci_config
 import pymysql
+
 import pdb
 
 
@@ -25,9 +26,10 @@ def post_to_area(postcode):
     else:
         return postcode
 
-def connect_db_fci():
-    '''function to manage database connection'''
-    return pymysql.connect(host=config.host,user=config.userfci, passwd= config.passwordfci, db = config.databasefci);
+def connect_fci_db():
+    '''handles mysql db connection to fci database'''
+    return pymysql.connect(host=fci_config.host,user=fci_config.userfci, passwd= fci_config.passwordfci, db = fci_config.databasefci);
+
 
 def postcodes_dict (url, areaName):
     ''' takes url of xml and area name
@@ -69,7 +71,6 @@ def resourcesDict(url):
         if key == 'resources':
             #dive into the resources
             resourcesList = jsonDecoded['resources']
-
     for entry in resourcesList:
         nestDict = {}
         nestDict['last_modified'] = entry['last_modified']
@@ -84,7 +85,7 @@ def find_xml(postcode):
     '''
     # connect to database
     pPostcode = post_to_area(postcode)
-    db = connect_db_fci()
+    db = connect_fci_db()
     cur = db.cursor()
     cur.execute('SELECT Area FROM fci_data.ordered_postcodes WHERE Postcode=(%s)',[pPostcode])
     db.commit()
@@ -108,11 +109,11 @@ def find_xml(postcode):
     db.close()
     return outputXmlDict
 
-
-def fci_index(postcode):
+def fci_calculate(postcode):
     '''
         requires postcode
         returns fciindex
+        and updates database
     '''
 
     # create fci counter
@@ -147,8 +148,12 @@ def fci_index(postcode):
                         for key in  keys:
                             if key in upper_business_name:
                                 fci_count = fci_count + 1
-    fci_result = fci_count/restaurant_count
-    return fci_result
+                                break
+    if restaurant_count == 0:
+        return fci_count
+    else:
+        result = fci_count/restaurant_count
+        return result
 
 
 def fci_return(postcode):
@@ -159,18 +164,19 @@ def fci_return(postcode):
     # normalise input
     postcode = post_to_area(postcode)
     # connect to database and create cursor
-    db = connect_db_fci()
+    db = connect_fci_db()
     cur = db.cursor()
     # check if there is already an entry in the database for that postcode
     # pdb.set_trace()
     cur.execute("SELECT FCI FROM fciIndex WHERE Postcode=(%s)", [postcode])
     db.commit()
     data = cur.fetchall()
+    db.close()
     if len(data) == 0:
-        error = 'There is no FCI data for this area'
-        return str(error)
+        no_data = 'There is no FCI data for this area'
+        return str(no_data)
     else:
         data = data[0]
         data = data[0]
-        return str(data)
-    db.close()
+        return "{0:.3f}%".format(data * 100)
+

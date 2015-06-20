@@ -10,33 +10,18 @@ from contextlib import closing
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template
 from fci_form import postcode_input
 from login_form import login_form
-import config
 import fciUtils
 import time
 from flask.ext.paginate import Pagination
 import pdb
 
-# configuration
 
-
-SECRET_KEY = config.secret_key
-CSRF_ENABLED = True
-DATABASE = config.databaseblog
-USERNAME = config.bloguser
-PASSWORD = config.blogpass
-PER_PAGE = 10
-CSS_FRAMEWORK = 'bootstrap3'
-LINK_SIZE = 'sm'
-
-# decide whether or not a single page returns pagination
-SHOW_SINGLE_PAGE = False
 
 
 # create flask app
 app = Flask(__name__)
 app.debug = True
-app.secret_key = config.secret_key
-app.config.from_object(__name__)
+app.config.from_pyfile('khal_config.cfg')
 
 # manage db connections for microblog
 def connect_db():

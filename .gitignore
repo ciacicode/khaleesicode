@@ -61,7 +61,8 @@ docs/_build/
 target/
 
 # Database details
-config.py
+fci_config.py
+config.cfg
 *.db
 requirements.txt
 
