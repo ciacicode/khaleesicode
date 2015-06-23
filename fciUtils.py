@@ -5,12 +5,11 @@
 '''
 from __future__ import division
 import xml.etree.ElementTree as ET
-from urllib2 import urlopen
+from urllib import urlopen
 import json
 import re
 import fci_config
 import pymysql
-
 import pdb
 
 
@@ -178,5 +177,21 @@ def fci_return(postcode):
     else:
         data = data[0]
         data = data[0]
-        return "{0:.3f}%".format(data * 100)
+        return "{0:2f}".format(data)
 
+
+def generate_fci_chart_data():
+    y = {}
+    y_data = []
+    x = []
+    db = connect_fci_db()
+    cur = db.cursor()
+    cur.execute("SELECT * FROM fciIndex ORDER BY FCI")
+    db.commit()
+    data = cur.fetchall()
+    db.close()
+    for postcode, fci in data:
+        y_data.append(fci)
+        x.append(postcode)
+    y["y"] = y_data
+    return y, x
