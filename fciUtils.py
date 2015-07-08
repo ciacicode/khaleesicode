@@ -1,8 +1,8 @@
-'''
+"""
     fciUtils is a set of common functions used in the realm of the project
 
     by ciacicode
-'''
+"""
 from __future__ import division
 import xml.etree.ElementTree as ET
 from urllib import urlopen
@@ -10,11 +10,12 @@ import json
 import re
 import fci_config
 import pymysql
+import csv
 import pdb
 
 
 def post_to_area(postcode):
-    '''takes a postcode, returns area code'''
+    """takes a postcode, returns area code"""
     # normalise user input
     postcode = postcode.upper()
     postcode = re.sub('[\W_]', '', postcode)
@@ -26,14 +27,14 @@ def post_to_area(postcode):
         return postcode
 
 def connect_fci_db():
-    '''handles mysql db connection to fci database'''
+    """handles mysql db connection to fci database"""
     return pymysql.connect(host=fci_config.host,user=fci_config.userfci, passwd= fci_config.passwordfci, db = fci_config.databasefci);
 
 
-def postcodes_dict (url, areaName):
-    ''' takes url of xml and area name
+def postcodes_dict(url, areaName):
+    """ takes url of xml and area name
         output dict as {'area':{'unique postcodes'}}
-    '''
+    """
     # parse the file with the etree library
     readURL = urlopen(url)
     tree = ET.parse(readURL)
@@ -56,11 +57,11 @@ def postcodes_dict (url, areaName):
     return outputDict
 
 def resourcesDict(url):
-    '''
+    """
         input url of json formatted data
         output dict
         { 'area': {'last_modified', 'url'}}
-    '''
+    """
     readData = urlopen(url)
     jsonSimple = json.load(readData)
     jsonEncoded = json.dumps(jsonSimple)
@@ -78,10 +79,10 @@ def resourcesDict(url):
     return resourcesDict
 
 def find_xml(postcode):
-    '''
+    """
        input a postcode returns dict of
        xml URL of area(s)
-    '''
+    """
     # connect to database
     pPostcode = post_to_area(postcode)
     db = connect_fci_db()
@@ -109,11 +110,11 @@ def find_xml(postcode):
     return outputXmlDict
 
 def fci_calculate(postcode):
-    '''
+    """
         requires postcode
         returns fciindex
         and updates database
-    '''
+    """
 
     # create fci counter
     fci_count = 0
@@ -156,10 +157,10 @@ def fci_calculate(postcode):
 
 
 def fci_return(postcode):
-    '''
+    """
     receives postcode
     returns fci
-    '''
+    """
     # normalise input
     postcode = post_to_area(postcode)
     # connect to database and create cursor
@@ -181,17 +182,19 @@ def fci_return(postcode):
 
 
 def generate_fci_chart_data():
-    y = {}
-    y_data = []
-    x = []
+    """
+    Generate a csv holding all fci data
+    """
     db = connect_fci_db()
     cur = db.cursor()
     cur.execute("SELECT * FROM fciIndex ORDER BY FCI")
     db.commit()
     data = cur.fetchall()
     db.close()
-    for postcode, fci in data:
-        y_data.append(fci)
-        x.append(postcode)
-    y["y"] = y_data
-    return y, x
+    with open('static/fci.csv', 'w') as f:
+        fieldnames = ['postcode', 'fci']
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for postcode, fci in data:
+            writer.writerow({'postcode': str(postcode),'fci': float(fci)})
+
