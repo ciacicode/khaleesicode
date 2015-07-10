@@ -3,7 +3,7 @@
 
     by ciacicode
 """
-from __future__ import division
+from __future__ import division, absolute_import
 import xml.etree.ElementTree as ET
 from urllib import urlopen
 import json
@@ -198,3 +198,12 @@ def generate_fci_chart_data():
         for postcode, fci in data:
             writer.writerow({'postcode': str(postcode),'fci': float(fci)})
 
+
+data = {}
+
+with open('static/fci.csv') as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        name = row['postcode']
+        fci = row['fci']
+        data[str(name)] = fci
