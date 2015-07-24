@@ -199,11 +199,4 @@ def generate_fci_chart_data():
             writer.writerow({'postcode': str(postcode),'fci': float(fci)})
 
 
-data = {}
 
-with open('static/fci.csv') as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        name = row['postcode']
-        fci = row['fci']
-        data[str(name)] = fci
