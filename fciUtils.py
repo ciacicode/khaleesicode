@@ -178,5 +178,5 @@ def fci_return(postcode):
     else:
         data = data[0]
         data = data[0]
-        return "{0:.3f}%".format(data * 100)
+        return "{0:.f}".format(data)
 
