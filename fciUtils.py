@@ -176,7 +176,6 @@ def fci_return(postcode):
         no_data = 'There is no FCI data for this area'
         return str(no_data)
     else:
-        data = data[0]
-        data = data[0]
-        return "{0:.f}".format(data)
+        data = data[0][0]
+        return data
 
