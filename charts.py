@@ -28,6 +28,7 @@ postcode_name = []
 postcode_fci = []
 
 for name in london_p:
+    pdb.set_trace()
     try:
         parent = name[0]
         fci_value = float(fci_data[parent])
@@ -36,7 +37,7 @@ for name in london_p:
         postcode_name.append(name[1])
         postcode_fci.append(fci_value)
     except KeyError:
-        postcode_colours.append("black")
+        postcode_colours.append("white")
 
 source = ColumnDataSource( data = dict(x=postcode_xs, y=postcode_ys, color=postcode_colours, name=postcode_name, rate=postcode_fci,))
 
