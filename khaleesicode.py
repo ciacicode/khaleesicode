@@ -7,13 +7,17 @@ __author__ = 'ciacicode'
 # all the imports
 import sqlite3
 from contextlib import closing
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template
-from fci_form import postcode_input
-from login_form import login_form
-import fciUtils
 import time
+
+from flask import Flask, request, session, g, redirect, url_for, abort, render_template
+
+from modules.fci_form import postcode_input
+from modules.login_form import login_form
+from modules import fciUtils
 from flask.ext.paginate import Pagination
-import pdb
+
+
+
 
 
 
@@ -21,7 +25,7 @@ import pdb
 # create flask app
 app = Flask(__name__)
 app.debug = True
-app.config.from_pyfile('khal_config.cfg')
+app.config.from_pyfile('configs/khal_config.cfg')
 
 # manage db connections for microblog
 def connect_db():

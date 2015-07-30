@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 from urllib import urlopen
 import json
 import re
-import fci_config
+from configs import fci_config
 import pymysql
 import csv
 import pdb
