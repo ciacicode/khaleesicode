@@ -62,6 +62,7 @@ target/
 
 # Database details
 fci_config.py
+*.cfg
 config.cfg
 *.db
 requirements.txt
