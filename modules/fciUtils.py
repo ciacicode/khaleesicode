@@ -179,7 +179,6 @@ def fci_return(postcode):
         data = data[0][0]
         return data
 
-
 def generate_fci_chart_data():
     """
     Generate a csv holding all fci data
@@ -196,6 +195,5 @@ def generate_fci_chart_data():
         writer.writeheader()
         for postcode, fci in data:
             writer.writerow({'postcode': str(postcode),'fci': float(fci)})
-
 
 
