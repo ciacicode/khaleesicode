@@ -15,11 +15,7 @@ from modules.fci_form import postcode_input
 from modules.login_form import login_form
 from modules import fciUtils
 from flask.ext.paginate import Pagination
-
-
-
-
-
+from modules.charts import script, div
 
 
 # create flask app
@@ -56,7 +52,7 @@ def teardown_request(exception):
 #views
 @app.route('/')
 def index():
-    return render_template('home.html')
+    return render_template('home.html', script=script)
 
 
 @app.route('/fci', methods=['GET', 'POST'])
@@ -68,12 +64,12 @@ def fci_form():
         postcode = request.form['postcode']
         # calculate fci
         result = fciUtils.fci_return(postcode)
-        return render_template('fci_form.html', form=form, result=result)
+        return render_template('fci_form.html', form=form, result=result, map=div)
     elif request.method == 'GET':
-        return render_template('fci_form.html', form=form)
+        return render_template('fci_form.html', form=form, map=div)
     else:
         error = 'Enter a valid postcode'
-        return render_template('fci_form.html', form=form, error=error)
+        return render_template('fci_form.html', form=form, error=error, map=div,)
 
 
 @app.route('/blog')

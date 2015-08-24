@@ -75,3 +75,4 @@ requirements.txt
 *.md~
 *.txt~
 .gitignore~
+*.~
