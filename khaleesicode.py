@@ -8,14 +8,12 @@ __author__ = 'ciacicode'
 import sqlite3
 from contextlib import closing
 import time
-
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template
-
 from modules.fci_form import postcode_input
 from modules.login_form import login_form
 from modules import fciUtils
 from flask.ext.paginate import Pagination
-from modules.charts import script, div
+from modules.charts import *
 
 
 # create flask app
@@ -52,7 +50,7 @@ def teardown_request(exception):
 #views
 @app.route('/')
 def index():
-    return render_template('home.html', script=script)
+    return render_template('home.html', script=script, map = div)
 
 
 @app.route('/fci', methods=['GET', 'POST'])
@@ -64,12 +62,12 @@ def fci_form():
         postcode = request.form['postcode']
         # calculate fci
         result = fciUtils.fci_return(postcode)
-        return render_template('fci_form.html', form=form, result=result, map=div)
+        return render_template('fci_form.html', form=form, result=result, map=div, script = script)
     elif request.method == 'GET':
-        return render_template('fci_form.html', form=form, map=div)
+        return render_template('fci_form.html', form=form, map=div, script = script)
     else:
         error = 'Enter a valid postcode'
-        return render_template('fci_form.html', form=form, error=error, map=div,)
+        return render_template('fci_form.html', form=form, error=error, map=div, script = script)
 
 
 @app.route('/blog')

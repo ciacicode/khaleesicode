@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% block form %}
+{{script|safe}}
 <section>
 	<header><h1>Fried Chicken Index</h1><br></header>
 	<form action="{{ url_for('fci_form')}}" method='POST'>
@@ -27,5 +28,5 @@
 {% endblock %}
 
 {% block map %}
-    map
+    {{map|safe}}
 {% endblock %}

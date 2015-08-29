@@ -4,6 +4,7 @@ This is a flask application that handles my website. It features:
 * Microblog application
 * Login form
 * Fried Chicken Index form
+* Fried Chicken Index map of London using Bokeh charts
 
 ##Requirements
 * Flask 0.10.1
@@ -12,6 +13,7 @@ This is a flask application that handles my website. It features:
 * Flask-Paginate
 * PyMysql
 * Contextlib
+* Bokeh 0.9.3
 
 
 
