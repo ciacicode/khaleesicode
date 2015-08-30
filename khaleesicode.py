@@ -50,7 +50,7 @@ def teardown_request(exception):
 #views
 @app.route('/')
 def index():
-    return render_template('home.html', script=script, map = div)
+    return render_template('home.html')
 
 
 @app.route('/fci', methods=['GET', 'POST'])
@@ -62,17 +62,16 @@ def fci_form():
         postcode = request.form['postcode']
         # calculate fci
         result = fciUtils.fci_return(postcode)
-        return render_template('fci_form.html', form=form, result=result, map=div, script = script)
+        return render_template('fci_form.html', form=form, result=result, map=div, script=script)
     elif request.method == 'GET':
-        return render_template('fci_form.html', form=form, map=div, script = script)
+        return render_template('fci_form.html', form=form, map=div, script=script)
     else:
         error = 'Enter a valid postcode'
-        return render_template('fci_form.html', form=form, error=error, map=div, script = script)
+        return render_template('fci_form.html', form=form, error=error, map=div, script=script)
 
 
 @app.route('/blog')
 def show_entries():
-    #pdb.set_trace()
     g.cur.execute('select count(*) from entries')
     total = g.cur.fetchone()[0]
     page, per_page, offset = get_page_items()

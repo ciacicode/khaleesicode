@@ -56,4 +56,3 @@ hover.point_policy = "follow_mouse"
 hover.tooltips = OrderedDict([("Name","@name"),("FCI","@rate"),("Long, Lat","$x, $y"),])
 
 script, div = components(p)
-#show(p)
