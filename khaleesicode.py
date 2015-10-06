@@ -46,6 +46,9 @@ def teardown_request(exception):
     if db is not None:
         db.close()
 
+@app.route("/", subdomain="api")
+def api_root():
+    return "hello api!"
 
 #views
 @app.route('/')
