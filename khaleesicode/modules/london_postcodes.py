@@ -6,14 +6,14 @@ associated value:
 
 Data is powered by http://www.opendoorlogistics.com/data/
 '''
-#from __future__ import absolute_import
+from __future__ import absolute_import
 import csv
 import pdb
 
 
 data = {}
 
-with open('static/london_postcodes.csv') as f:
+with open('/home/maria/Desktop/ciacicode/khaleesicode/khaleesicode/static/london_postcodes.csv') as f:
     reader = csv.DictReader(f)
     for row in reader:
         parent = row['parent']
