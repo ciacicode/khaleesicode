@@ -11,7 +11,8 @@ This is a flask application that handles my website. It features:
 * Python 2.7.9
 * Flask-WTF
 * Flask-Paginate
-* PyMysql
+* SQLAlchemy
+* Flask-SQLAlchemy
 * Contextlib
 * Bokeh 0.9.3
 
