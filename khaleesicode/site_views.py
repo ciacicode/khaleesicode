@@ -1,25 +1,17 @@
-'''
-	Flask app for Khaleesicode.com
-   	by ciacicode
-'''
-
 __author__ = 'ciacicode'
-# all the imports
+
 import sqlite3
 from contextlib import closing
 import time
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template
+from flask import request, session, g, redirect, url_for, abort, render_template
 from modules.fci_form import postcode_input
 from modules.login_form import login_form
-from modules import fciUtils
 from flask.ext.paginate import Pagination
 from modules.charts import *
+from modules.fci import *
+from khaleesicode import app
 
 
-# create flask app
-app = Flask(__name__)
-app.debug = True
-app.config.from_pyfile('configs/khal_config.cfg')
 
 # manage db connections for microblog
 def connect_db():
@@ -28,7 +20,7 @@ def connect_db():
 
 def init_db():
     with closing(connect_db()) as db:
-        with app.open_resource('static/schema.sql', mode='r') as f:
+        with app.open_resource('/home/maria/Desktop/ciacicode/khaleesicode/khaleesicode/static/schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
 
@@ -46,10 +38,6 @@ def teardown_request(exception):
     if db is not None:
         db.close()
 
-@app.route("/", subdomain="api")
-def api_root():
-    return "hello api!"
-
 #views
 @app.route('/')
 def index():
@@ -64,7 +52,7 @@ def fci_form():
         # handle user input
         postcode = request.form['postcode']
         # calculate fci
-        result = fciUtils.fci_return(postcode)
+        result = fci_return(postcode)
         return render_template('fci_form.html', form=form, result=result, map=div, script=script)
     elif request.method == 'GET':
         return render_template('fci_form.html', form=form, map=div, script=script)
@@ -158,6 +146,4 @@ def get_pagination(**kwargs):
                       **kwargs
                       )
 
-if __name__ == '__main__':
-	app.run()
 

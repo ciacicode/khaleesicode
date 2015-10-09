@@ -1,17 +1,16 @@
 __author__ = 'ciacicode'
 
 from collections import OrderedDict
-from bokeh.plotting import figure, show, output_file, ColumnDataSource
+from bokeh.plotting import figure, ColumnDataSource
 from bokeh.models import HoverTool
 from bokeh.embed import components
-import pdb
 import csv
-import modules.london_postcodes as lp
+import london_postcodes as lp
 
 
 fci_data = {}
 
-with open('static/fci.csv') as f:
+with open('/home/maria/Desktop/ciacicode/khaleesicode/khaleesicode/static/fci.csv') as f:
     reader = csv.DictReader(f)
     for row in reader:
         ps = row['postcode']
