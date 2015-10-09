@@ -11,7 +11,7 @@ import csv
 import string
 
 app = Flask(__name__)
-app.config.from_pyfile('/home/maria/Desktop/ciacicode/khaleesicode/khaleesicode/confs/fci.cfg')
+app.config.from_pyfile('/home/maria/Desktop/ciacicode/khaleesicode/khaleesicode/configs/fci.cfg')
 db = SQLAlchemy(app)
 
 
@@ -71,7 +71,8 @@ class FciSources(db.Model):
         return 'Source for %r was last modified on %r' % (self.area, self.last_modified)
 
 
-# Functions
+# Functions to return or normalise data for the database insertion
+
 def post_to_area(postcode):
     """takes a postcode, returns area code"""
     # normalise user input
