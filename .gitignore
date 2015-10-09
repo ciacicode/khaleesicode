@@ -67,6 +67,7 @@ config.cfg
 *.db
 requirements.txt
 
+
 # Images
 *.png
 *.ico
@@ -76,3 +77,6 @@ requirements.txt
 *.txt~
 .gitignore~
 *.~
+#Static files
+*.csv
+*.sql
