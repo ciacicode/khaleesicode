@@ -4,7 +4,7 @@ import sqlite3
 from contextlib import closing
 import time
 from flask import request, session, g, redirect, url_for, abort, render_template
-from modules.fci_form import postcode_input
+from modules.fci_form import PostcodeInput
 from modules.login_form import login_form
 from flask.ext.paginate import Pagination
 from modules.charts import *
@@ -48,7 +48,7 @@ def index():
 @app.route('/fci', methods=['GET', 'POST'])
 def fci_form():
     error = None
-    form = postcode_input(request.form)
+    form = PostcodeInput(request.form)
     if form.validate_on_submit():
         # handle user input
         postcode = request.form['postcode']
