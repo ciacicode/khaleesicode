@@ -8,12 +8,12 @@ Data is powered by http://www.opendoorlogistics.com/data/
 '''
 from __future__ import absolute_import
 import csv
-import pdb
+from mysite.configs.khal_config import Config
 
 
 data = {}
 
-with open('/home/maria/Desktop/ciacicode/khaleesicode/mysite/static/london_postcodes.csv') as f:
+with open(Config.LONDONCSVPATH) as f:
     reader = csv.DictReader(f)
     for row in reader:
         parent = row['parent']

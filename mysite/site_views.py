@@ -10,6 +10,7 @@ from flask.ext.paginate import Pagination
 from modules.charts import *
 from modules.fci import *
 from mysite import app
+from mysite.configs.khal_config import Config
 
 
 
@@ -20,7 +21,7 @@ def connect_db():
 
 def init_db():
     with closing(connect_db()) as db:
-        with app.open_resource('/home/maria/Desktop/ciacicode/mysite/mysite/static/schema.sql', mode='r') as f:
+        with app.open_resource(Config.SQLSCHEMA, mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
 

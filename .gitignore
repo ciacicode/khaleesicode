@@ -61,7 +61,8 @@ docs/_build/
 target/
 
 # Database details
-fci_config.py
+khal_config.py
+khal_config_prod.py
 *.cfg
 config.cfg
 *.db

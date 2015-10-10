@@ -6,11 +6,12 @@ from bokeh.models import HoverTool
 from bokeh.embed import components
 import csv
 import london_postcodes as lp
+from mysite.configs.khal_config import Config
 
 
 fci_data = {}
 
-with open('/home/maria/Desktop/ciacicode/khaleesicode/mysite/static/fci.csv') as f:
+with open(Config.FCICSVPATH) as f:
     reader = csv.DictReader(f)
     for row in reader:
         ps = row['postcode']
