@@ -1,7 +1,3 @@
-'''
-	Flask app for Khaleesicode.com
-   	by ciacicode
-'''
 
 __author__ = 'ciacicode'
 # all the imports

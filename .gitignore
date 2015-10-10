@@ -80,3 +80,6 @@ requirements.txt
 #Static files
 *.csv
 *.sql
+
+# runserver
+runserver.py
