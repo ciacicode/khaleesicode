@@ -11,7 +11,7 @@ import csv
 import string
 
 app = Flask(__name__)
-app.config.from_pyfile('/home/maria/Desktop/ciacicode/khaleesicode/khaleesicode/configs/fci.cfg')
+app.config.from_pyfile('/home/maria/Desktop/ciacicode/mysite/mysite/configs/fci.cfg')
 db = SQLAlchemy(app)
 
 

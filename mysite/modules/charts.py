@@ -10,7 +10,7 @@ import london_postcodes as lp
 
 fci_data = {}
 
-with open('/home/maria/Desktop/ciacicode/khaleesicode/khaleesicode/static/fci.csv') as f:
+with open('/home/maria/Desktop/ciacicode/mysite/mysite/static/fci.csv') as f:
     reader = csv.DictReader(f)
     for row in reader:
         ps = row['postcode']

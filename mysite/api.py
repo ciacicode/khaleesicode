@@ -4,7 +4,7 @@ __author__ = 'ciacicode'
 from modules.fci import *
 from flask import request
 from flask import jsonify
-from khaleesicode import app
+from mysite import app
 
 
 @app.route('/api')
@@ -33,7 +33,7 @@ def api_fci():
         resp = jsonify(
             {
     "url": "http://www.khaleesicode.com/api/fci",
-    "description": "Returns FCI value for a given postcode as GET parameter api.khaleesicode.com/fci?postcode=<postcode>",
+    "description": "Returns FCI value for a given postcode as GET parameter api.mysite.com/fci?postcode=<postcode>",
     "resources": {
         "postcodes": {
             "url": "http://www.khaleesicode.com/api/fci/postcodes",
@@ -41,7 +41,7 @@ def api_fci():
         },
         "history": {
             "url": "http://www.khaleesicode.com/api/fci/history",
-            "description": "Returns the known history of FCI values for a given postcode. It requires GET parameter postcode as api.khaleesicode.com/fci/history?postcode=<postcode>"
+            "description": "Returns the known history of FCI values for a given postcode. It requires GET parameter postcode as api.mysite.com/fci/history?postcode=<postcode>"
         },
         "maximum": {
             "url": "http://www.khaleesicode.com/api/fci/maximum",

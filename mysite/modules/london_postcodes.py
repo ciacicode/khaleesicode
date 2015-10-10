@@ -13,7 +13,7 @@ import pdb
 
 data = {}
 
-with open('/home/maria/Desktop/ciacicode/khaleesicode/khaleesicode/static/london_postcodes.csv') as f:
+with open('/home/maria/Desktop/ciacicode/mysite/mysite/static/london_postcodes.csv') as f:
     reader = csv.DictReader(f)
     for row in reader:
         parent = row['parent']
