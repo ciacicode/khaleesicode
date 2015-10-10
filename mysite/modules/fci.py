@@ -1,17 +1,19 @@
 from __future__ import division, absolute_import
 __author__ = 'ciacicode'
+
 import xml.etree.ElementTree as ET
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
 from urllib import urlopen
+from mysite.configs.khal_config import Config
 import json
 import re
 import csv
 import string
 
 app = Flask(__name__)
-app.config.from_pyfile('/home/maria/Desktop/ciacicode/mysite/mysite/configs/fci.cfg')
+app.config.from_object(Config)
 db = SQLAlchemy(app)
 
 

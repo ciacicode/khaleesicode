@@ -9,7 +9,17 @@ from mysite import app
 
 @app.route('/api')
 def api_root():
-    return "Welcome"
+    resp = jsonify({
+        "description": "This is the home of khaleesicode apis",
+        "apis":
+                {
+                    "api": "Fried Chicken Index",
+                    "description": "Returns FCI for a given postcode",
+                    "endpoint": "/api/fci",
+                }
+
+    })
+    return resp
 
 
 @app.route('/api/fci')
@@ -69,7 +79,7 @@ def api_postcodes():
 def not_found(error=None):
     message = {
             'status': 404,
-            'message': 'Not yadda yadda Found: ' + request.url,
+            'message': 'Not Found: ' + request.url,
     }
     resp = jsonify(message)
     resp.status_code = 404

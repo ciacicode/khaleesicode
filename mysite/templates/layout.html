@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
     <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.9.0.min.css">
     <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.9.0.min.js"></script>
     <link rel="canonical" href="https://www.khaleesicode.com/" itemprop="url">
@@ -42,6 +44,7 @@
       ga('create', 'UA-8562021-3', 'auto');
       ga('send', 'pageview');
    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
 </head>
 <div class="container">
     <div class="navbar-spacer"> </div>

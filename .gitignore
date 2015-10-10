@@ -77,8 +77,6 @@ requirements.txt
 .gitignore~
 *.~
 #Static files
-*.csv
-*.sql
 
 # runserver
 runserver.py
