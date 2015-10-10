@@ -3,7 +3,7 @@ __author__ = 'ciacicode'
 
 import xml.etree.ElementTree as ET
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from urllib import urlopen
 from mysite.configs.khal_config import Config

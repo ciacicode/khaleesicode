@@ -6,7 +6,7 @@ import time
 from flask import request, session, g, redirect, url_for, abort, render_template
 from modules.fci_form import PostcodeInput
 from modules.login_form import login_form
-from flask.ext.paginate import Pagination
+from flask_paginate import Pagination
 from modules.charts import *
 from modules.fci import *
 from mysite import app
@@ -146,5 +146,3 @@ def get_pagination(**kwargs):
                       show_single_page=show_single_page_or_not(),
                       **kwargs
                       )
-
-
