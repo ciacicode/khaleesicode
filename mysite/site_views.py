@@ -5,7 +5,7 @@ from contextlib import closing
 import time
 from flask import request, session, g, redirect, url_for, abort, render_template
 from modules.fci_form import PostcodeInput
-from modules.login_form import login_form
+from modules.loginform import LoginForm
 from flask_paginate import Pagination
 from modules.charts import *
 from modules.fci import *
@@ -93,7 +93,7 @@ def add_entry():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
-    form = login_form(request.form)
+    form = LoginForm(request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
             username = request.form['username']

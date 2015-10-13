@@ -11,6 +11,8 @@ import json
 import re
 import csv
 import string
+import pdb
+import unicodedata
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -125,39 +127,39 @@ def fci_calculate(postcode):
     fci_count = 0
     restaurant_count = 0
     zone_input = post_to_area(postcode)
-    keys = ("CHICKEN", "CHICK")
+    keys = ("CHICKEN", "CHICK", "FRIED")
     no_keys = "NANDO"
-    xml_dict = find_xml(zone_input)
-    # unpack URLs from xmlDict
-    for value in xml_dict.values():
-        # each value is a tuple
-        # parse the url with the etree library
-        u = urlopen(value[0])
-        tree = ET.parse(u)
-        root = tree.getroot()
-        collection = root.find('EstablishmentCollection')
-        for detail in collection.findall('EstablishmentDetail'):
-            postcode = detail.findtext('PostCode')
-            if postcode is not None:
-                zone_xml = post_to_area(postcode)
-                if zone_input == zone_xml:
-                    restaurant_count += 1
-                    business_name = detail.find('BusinessName').text
-                    upper_business_name = business_name.upper()
-                    if upper_business_name == '':
-                        break
-                    elif no_keys in upper_business_name:
-                        break
-                    else:
-                        for key in keys:
-                            if key in upper_business_name:
-                                fci_count += 1
-                                break
+    url = find_xml(zone_input)
+    # unpack URLs from xml_dict
+    u = urlopen(url)
+    tree = ET.parse(u)
+    root = tree.getroot()
+    collection = root.find('EstablishmentCollection')
+    for detail in collection.findall('EstablishmentDetail'):
+        xml_postcode = detail.findtext('PostCode')
+        if xml_postcode is not None:
+            zone_xml = post_to_area(xml_postcode)
+            if zone_input == zone_xml:
+                pdb.set_trace()
+                restaurant_count += 1
+                business_name = detail.find('BusinessName').text
+                upper_business_name = business_name.upper()
+                if upper_business_name == '':
+                    break
+                elif no_keys in upper_business_name:
+                    break
+                else:
+                    for key in keys:
+                        if key in upper_business_name:
+
+                            fci_count += 1
+                            break
     if restaurant_count == 0:
         return fci_count
     else:
         result = fci_count/restaurant_count
         return result
+
 
 
 def resources_list(url):
@@ -196,17 +198,16 @@ def generate_fci_chart_data():
     Generate a csv holding all fci data
     """
     # db = connect_fci_db()
-    cur = db.cursor()
-    cur.execute("SELECT * FROM fciIndex ORDER BY FCI")
-    db.commit()
-    data = cur.fetchall()
-    db.close()
-    with open('static/fci.csv', 'w') as f:
-        fieldnames = ['postcode', 'fci']
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        for postcode, fci in data:
-            writer.writerow({'postcode': str(postcode), 'fci': float(fci)})
+    #cur.execute("SELECT * FROM fciIndex ORDER BY FCI")
+    #db.commit()
+    #data = cur.fetchall()
+    #db.close()
+    #with open('static/fci.csv', 'w') as f:
+    #    fieldnames = ['postcode', 'fci']
+    #   writer = csv.DictWriter(f, fieldnames=fieldnames)
+    #    writer.writeheader()
+    #    for postcode, fci in data:
+    #        writer.writerow({'postcode': str(postcode), 'fci': float(fci)})
 
 # Functions to update or search databases
 
@@ -283,11 +284,13 @@ def find_xml(postcode):
        xml URL of area(s)
     """
     p_postcode = post_to_area(postcode)
-    location = Locations.query.filter_by(postcode=p_postcode).first()
-    area = location.area
-    source = FciSources.query.filter_by(area=area).first()
-    url_xml = source.url
-    return url_xml
+    location = Locations.query.filter_by(postcode=p_postcode).all()
+    xml_list = list()
+    pdb.set_trace()
+    for item in location:
+        source = FciSources.query.filter_by(area=item.area).first()
+        xml_list.append(source.url)
+    return xml_list
 
 
 def fci_return(postcode):

@@ -4,7 +4,7 @@ from wtforms import TextField, SubmitField
 
 
 # create a class for the login form
-class login_form(Form):
+class LoginForm(Form):
     username = TextField('username')
     password = TextField('password')
     submit = SubmitField('Login')
