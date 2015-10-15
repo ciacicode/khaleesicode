@@ -122,44 +122,43 @@ def fci_calculate(postcode):
         returns fciindex
         and updates database
     """
-
     # create fci counter
     fci_count = 0
     restaurant_count = 0
     zone_input = post_to_area(postcode)
     keys = ("CHICKEN", "CHICK", "FRIED")
     no_keys = "NANDO"
-    url = find_xml(zone_input)
+    url_list = find_xml(zone_input)
     # unpack URLs from xml_dict
-    u = urlopen(url)
-    tree = ET.parse(u)
-    root = tree.getroot()
-    collection = root.find('EstablishmentCollection')
-    for detail in collection.findall('EstablishmentDetail'):
-        xml_postcode = detail.findtext('PostCode')
-        if xml_postcode is not None:
-            zone_xml = post_to_area(xml_postcode)
-            if zone_input == zone_xml:
-                pdb.set_trace()
-                restaurant_count += 1
-                business_name = detail.find('BusinessName').text
-                upper_business_name = business_name.upper()
-                if upper_business_name == '':
-                    break
-                elif no_keys in upper_business_name:
-                    break
-                else:
-                    for key in keys:
-                        if key in upper_business_name:
+    for item in url_list:
 
-                            fci_count += 1
-                            break
+        u = urlopen(item)
+        tree = ET.parse(u)
+        root = tree.getroot()
+        collection = root.find('EstablishmentCollection')
+        for detail in collection.findall('EstablishmentDetail'):
+            xml_postcode = detail.findtext('PostCode')
+            if xml_postcode is not None:
+                zone_xml = post_to_area(xml_postcode)
+                if zone_input == zone_xml:
+                    restaurant_count += 1
+                    business_name = detail.find('BusinessName').text
+                    upper_business_name = business_name.upper()
+                    if upper_business_name == '':
+                        break
+                    elif no_keys in upper_business_name:
+                        break
+                    else:
+                        for key in keys:
+                            if key in upper_business_name:
+
+                                fci_count += 1
+                                break
     if restaurant_count == 0:
         return fci_count
     else:
         result = fci_count/restaurant_count
         return result
-
 
 
 def resources_list(url):
@@ -286,7 +285,6 @@ def find_xml(postcode):
     p_postcode = post_to_area(postcode)
     location = Locations.query.filter_by(postcode=p_postcode).all()
     xml_list = list()
-    pdb.set_trace()
     for item in location:
         source = FciSources.query.filter_by(area=item.area).first()
         xml_list.append(source.url)
