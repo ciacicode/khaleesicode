@@ -1,43 +1,43 @@
 __author__ = 'ciacicode'
 
-import sqlite3
-from contextlib import closing
-import time
-from flask import request, session, g, redirect, url_for, abort, render_template
+from flask import request, session, g, redirect, url_for, abort, render_template, copy_current_request_context
 from modules.fci_form import PostcodeInput
 from modules.loginform import LoginForm
+from modules.db_models import *
 from flask_paginate import Pagination
 from modules.charts import *
-from modules.fci import *
+from modules.blog import *
 from mysite import app
+import pdb
 from mysite.configs.khal_config import Config
 
 
 
-# manage db connections for microblog
-def connect_db():
-    return sqlite3.connect(app.config['DATABASE'])
-
-
-def init_db():
-    with closing(connect_db()) as db:
-        with app.open_resource(Config.SQLSCHEMA, mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-
-
+# # manage db connections for microblog
+# def connect_db():
+#     return sqlite3.connect(app.config['DATABASE'])
+#
+#
+# def init_db():
+#     with closing(connect_db()) as db:
+#         with app.open_resource(Config.SQLSCHEMA, mode='r') as f:
+#             db.cursor().executescript(f.read())
+#         db.commit()
+#
+#
 # handling requests
-@app.before_request
-def before_request():
-    g.db = connect_db()
-    g.cur = g.db.cursor()
 
-
-@app.teardown_request
-def teardown_request(exception):
-    db = getattr(g, 'db', None)
-    if db is not None:
-        db.close()
+# @app.before_request
+# def before_request():
+#     g.db = connect_db()
+#     g.cur = g.db.cursor()
+#
+#
+# @app.teardown_request
+# def teardown_request(exception):
+#     db = getattr(g, 'db', None)
+#     if db is not None:
+#         db.close()
 
 #views
 @app.route('/')
@@ -53,7 +53,7 @@ def fci_form():
         # handle user input
         postcode = request.form['postcode']
         # calculate fci
-        result = fci_return(postcode)
+        result = fci.fci_return(postcode)
         return render_template('fci_form.html', form=form, result=result, map=div, script=script)
     elif request.method == 'GET':
         return render_template('fci_form.html', form=form, map=div, script=script)
@@ -64,13 +64,13 @@ def fci_form():
 
 @app.route('/blog')
 def show_entries():
-    g.cur.execute('select count(*) from entries')
-    total = g.cur.fetchone()[0]
+    all_entries = db.session.query(Entries)
+    all_entries = all_entries.all()
+    total = len(all_entries)
     page, per_page, offset = get_page_items()
-    sql = 'select title, text from entries order by date desc limit {}, {}'\
-        .format(offset, per_page)
-    g.cur.execute(sql)
-    entries = [dict(title=row[0], text=row[1]) for row in g.cur.fetchall()]
+    # query db for all entries data but start at offset and end at limit per_page
+    entries_to_display = db.session.query(Entries).order_by(Entries.date)
+    entries = [dict(title=entry.title, text=entry.text) for entry in entries_to_display]
     pagination = get_pagination(page=page,
                                 per_page=per_page,
                                 record_name='entries',
@@ -84,9 +84,7 @@ def show_entries():
 def add_entry():
     if not session.get('logged_in'):
         abort(401)
-    g.db.execute('insert into entries (title, text, date) values (?, ?, ?)',
-                 [request.form['title'], request.form['text'], time.strftime('%Y-%m-%d %H:%M:%S')])
-    g.db.commit()
+    add_blog_post(request.form['title'], request.form['text'])
     return redirect(url_for('show_entries'))
 
 
