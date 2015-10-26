@@ -21,20 +21,16 @@
   {% endfor %}
   </tr>
 
-<!-- This is from the Flask-SqlAlchemy documentation -->
-{% macro render_pagination(paginated, show_entries) %}
-<div>
-{%- for page in paginated.iter_pages() %}
-{% if page %}
-  {% if page != paginated.page %}
-    <a href="{{ url_for('show_entries', page=page) }}">{{ page }}</a>
-  {% else %}
-    <strong>{{ page }}</strong>
-  {% endif %}
+<div class=pagination>
+{% if paginated.has_prev %}
+    <a href="{{ url_for('show_entries', page=paginated.prev_num) }}">Previous</a>
 {% else %}
-  <span class=ellipsis>…</span>
+    First page
 {% endif %}
-{%- endfor %}
+{% if paginated.has_next %}
+    <a href="{{ url_for('show_entries', page=paginated.next_num) }}">Next</a>
+{% else %}
+    Last page
+{% endif %}
 </div>
-{% endmacro %}
 {% endblock %}
