@@ -4,7 +4,7 @@ from flask import request, session, g, redirect, url_for, abort, render_template
 from modules.fci_form import PostcodeInput
 from modules.loginform import LoginForm
 from modules.db_models import *
-from flask_paginate import Pagination
+from flask_sqlalchemy import Pagination
 from modules.charts import *
 from modules.blog import *
 from mysite import app
@@ -62,22 +62,11 @@ def fci_form():
         return render_template('fci_form.html', form=form, error=error, map=div, script=script)
 
 
-@app.route('/blog')
-def show_entries():
-    all_entries = db.session.query(Entries)
-    all_entries = all_entries.all()
-    total = len(all_entries)
-    page, per_page, offset = get_page_items()
-    # query db for all entries data but start at offset and end at limit per_page
-    entries_to_display = db.session.query(Entries).order_by(Entries.date)
-    entries = [dict(title=entry.title, text=entry.text) for entry in entries_to_display]
-    pagination = get_pagination(page=page,
-                                per_page=per_page,
-                                record_name='entries',
-                                total=total,
-                                format_total=True,
-                                format_number=True)
-    return render_template('show_entries.html', entries=entries, page=page, per_page=per_page, pagination=pagination)
+@app.route("/blog/", defaults={'page': 1}, methods=["GET", "POST"])
+@app.route("/blog/<int:page>/", methods=["GET", "POST"])
+def show_entries(page=1):
+    paginated = Entries.query.order_by(Entries.date).paginate(page, app.config['PER_PAGE'], False)
+    return render_template('show_entries.html', paginated=paginated)
 
 
 @app.route('/add', methods=['POST'])
@@ -110,37 +99,3 @@ def login():
 def logout():
     session.pop('logged_in', None)
     return redirect(url_for('show_entries'))
-
-
-# helper functions for pagination
-def get_css_framework():
-    return app.config['CSS_FRAMEWORK']
-
-
-def get_link_size():
-    return app.config['LINK_SIZE']
-
-
-def show_single_page_or_not():
-    return app.config['SHOW_SINGLE_PAGE']
-
-
-def get_page_items():
-    page = int(request.args.get('page', 1))
-    per_page = request.args.get('per_page')
-    if not per_page:
-        per_page = app.config['PER_PAGE']
-    else:
-        per_page = int(per_page)
-
-    offset = (page - 1) * per_page
-    return page, per_page, offset
-
-
-def get_pagination(**kwargs):
-    kwargs.setdefault('record_name', 'records')
-    return Pagination(css_framework=get_css_framework(),
-                      link_size=get_link_size(),
-                      show_single_page=show_single_page_or_not(),
-                      **kwargs
-                      )

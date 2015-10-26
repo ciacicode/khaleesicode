@@ -12,18 +12,29 @@
     </form>
   {% endif %}
   <tr class=entries>
-  {% for entry in entries %}
-    <td><h1>{{ entry.title }}</h1></td>
-    <td><p>{{ entry.text|safe }}</p></td>
-
+  {% for post in paginated.items %}
+    <td><h1>{{ post.title }}</h1></td>
+    <td><p>{{ post.text|safe }}</p></td>
   {% else %}
     <em>Unbelievable.  No entries here so far</em>
 
   {% endfor %}
   </tr>
-{{pagination.links}}
-{% endblock %}
 
-{% block js %}
-  $('#entries-url').addClass('active');
+<!-- This is from the Flask-SqlAlchemy documentation -->
+{% macro render_pagination(paginated, show_entries) %}
+<div>
+{%- for page in paginated.iter_pages() %}
+{% if page %}
+  {% if page != paginated.page %}
+    <a href="{{ url_for('show_entries', page=page) }}">{{ page }}</a>
+  {% else %}
+    <strong>{{ page }}</strong>
+  {% endif %}
+{% else %}
+  <span class=ellipsis>…</span>
+{% endif %}
+{%- endfor %}
+</div>
+{% endmacro %}
 {% endblock %}
