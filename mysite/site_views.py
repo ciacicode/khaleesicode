@@ -68,6 +68,11 @@ def show_entries(page=1):
     paginated = Entries.query.order_by(Entries.date).paginate(page, app.config['PER_PAGE'], False)
     return render_template('show_entries.html', paginated=paginated)
 
+@app.route("/blog/<slug>")
+def show_post(slug):
+    entry = Entries.query.filter_by(slug = slug).first_or_404()
+    return render_template('entry_detail.html', entry = entry)
+
 
 @app.route('/add', methods=['POST'])
 def add_entry():

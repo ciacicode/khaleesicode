@@ -1,0 +1,5 @@
+{% extends "layout.html" %}
+{% block entry %}
+    <td><h1>{{ entry.title }}</h1></td>
+    <td><p>{{ entry.text|safe }}</p></td>
+{% endblock %}

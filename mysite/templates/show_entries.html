@@ -21,16 +21,16 @@
   {% endfor %}
   </tr>
 
-<div class=pagination>
+<div class="pagination row">
+  <div class="six columns">
 {% if paginated.has_prev %}
-    <a href="{{ url_for('show_entries', page=paginated.prev_num) }}">Previous</a>
-{% else %}
-    First page
+    <a href="{{ url_for('show_entries', page=paginated.prev_num) }}"><< Previous</a>
 {% endif %}
+    </div>
 {% if paginated.has_next %}
-    <a href="{{ url_for('show_entries', page=paginated.next_num) }}">Next</a>
-{% else %}
-    Last page
+  <div class="six columns">
+    <a href="{{ url_for('show_entries', page=paginated.next_num) }}">Next >></a>
+  </div>
 {% endif %}
 </div>
 {% endblock %}
