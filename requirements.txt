@@ -103,6 +103,7 @@ terminado==0.5
 Theano==0.6.0
 toolz==0.7.1
 tornado==4.2.1
+translitcodec==0.4.0
 ujson==1.33
 unicodecsv==0.9.4
 Werkzeug==0.10.4
