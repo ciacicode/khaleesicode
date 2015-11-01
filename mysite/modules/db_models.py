@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from mysite.configs.khal_config import Config
 from mysite.modules import blog
+from flask_wtf import Form
+from wtforms import StringField, validators, SubmitField
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -102,5 +104,11 @@ class Comments(db.Model):
         self.entry_id = entry_id
         self.user_id = user_id
 
+
+# create a class for the form
+class PostcodeInput(Form):
+    postcode = StringField('postcode', [validators.DataRequired(message=u"Where is your postcode?"),
+                                        validators.Length(min=2, max=10)])
+    submit = SubmitField('Submit')
 
 

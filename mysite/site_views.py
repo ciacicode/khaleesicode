@@ -1,7 +1,6 @@
 __author__ = 'ciacicode'
 
 from flask import request, session, g, redirect, url_for, abort, render_template, copy_current_request_context
-from modules.fci_form import PostcodeInput
 from modules.loginform import LoginForm
 from modules.db_models import *
 from modules.charts import *
