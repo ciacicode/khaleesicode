@@ -66,6 +66,7 @@ khal_config_prod.py
 *.cfg
 config.cfg
 *.db
+*.csv
 
 
 # Images

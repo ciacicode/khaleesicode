@@ -76,14 +76,14 @@ class Entries(db.Model):
     text = db.Column(db.String(10000))
     slug = db.Column(db.String(300))
     date = db.Column(db.DateTime)
-    comments = db.relationship('Comments', backref='person',
+    comments = db.relationship('Comments', backref='entries',
                                 lazy='dynamic')
-
     def __init__(self, title, text):
         self.title = title
         self.text = text
         self.date = datetime.utcnow()
         self.slug = blog.slugify(self.title)
+
 
 
 class Comments(db.Model):
@@ -93,6 +93,14 @@ class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(600))
     entry_id = db.Column(db.Integer, db.ForeignKey('entries.id'))
+    date = db.Column(db.DateTime)
+    user_id = db.Column(db.String)
+
+    def __init__(self, text, user_id, entry_id):
+        self.text = text
+        self.date = datetime.utcnow()
+        self.entry_id = entry_id
+        self.user_id = user_id
 
 
 

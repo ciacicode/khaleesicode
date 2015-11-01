@@ -4,40 +4,13 @@ from flask import request, session, g, redirect, url_for, abort, render_template
 from modules.fci_form import PostcodeInput
 from modules.loginform import LoginForm
 from modules.db_models import *
-from flask_sqlalchemy import Pagination
 from modules.charts import *
 from modules.blog import *
+from modules.fci import *
 from mysite import app
 import pdb
 from mysite.configs.khal_config import Config
 
-
-
-# # manage db connections for microblog
-# def connect_db():
-#     return sqlite3.connect(app.config['DATABASE'])
-#
-#
-# def init_db():
-#     with closing(connect_db()) as db:
-#         with app.open_resource(Config.SQLSCHEMA, mode='r') as f:
-#             db.cursor().executescript(f.read())
-#         db.commit()
-#
-#
-# handling requests
-
-# @app.before_request
-# def before_request():
-#     g.db = connect_db()
-#     g.cur = g.db.cursor()
-#
-#
-# @app.teardown_request
-# def teardown_request(exception):
-#     db = getattr(g, 'db', None)
-#     if db is not None:
-#         db.close()
 
 #views
 @app.route('/')
@@ -53,7 +26,7 @@ def fci_form():
         # handle user input
         postcode = request.form['postcode']
         # calculate fci
-        result = fci.fci_return(postcode)
+        result = fci_return(postcode)
         return render_template('fci_form.html', form=form, result=result, map=div, script=script)
     elif request.method == 'GET':
         return render_template('fci_form.html', form=form, map=div, script=script)
