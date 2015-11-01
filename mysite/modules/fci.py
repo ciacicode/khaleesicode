@@ -1,81 +1,13 @@
 from __future__ import division, absolute_import
 __author__ = 'ciacicode'
-
-import xml.etree.ElementTree as ET
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-from urllib import urlopen
-from mysite.configs.khal_config import Config
-import json
-import re
-import csv
+from mysite.modules.db_models import *
 import string
-import pdb
-import unicodedata
+import re
+from urllib import urlopen
+import json
+import xml.etree.ElementTree as ET
+import datetime
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-
-
-class Locations(db.Model):
-    """
-        Defines the columns and keys for Locations table
-    """
-    id = db.Column(db.Integer, primary_key=True)
-    postcode = db.Column(db.String(10))
-    area = db.Column(db.String(50))
-
-    def __init__(self, area, postcode):
-        self.area = area
-        self.postcode = postcode
-
-    def __repr__(self):
-        return '%r' % self.area
-
-
-class FciIndex(db.Model):
-    """
-        Defines the columns and keys for the Fried Chicken Index Table
-    """
-    id = db.Column(db.Integer, primary_key=True)
-    postcode = db.Column(db.String(10), index=True)
-    fci = db.Column(db.Float)
-    date = db.Column(db.DateTime)
-
-    def __init__(self, postcode, fci, date=None):
-        self.postcode = postcode
-        self.fci = fci
-        if date is None:
-            date = datetime.utcnow()
-        self.date = date
-
-    def __repr__(self):
-        return 'fci for %r is %f' % (self.postcode, self.fci)
-
-
-class FciSources(db.Model):
-    """
-        Defines the columns and keys for the Sources table
-    """
-    id = db.Column(db.Integer, primary_key=True)
-    area = db.Column(db.String(50))
-    last_modified = db.Column(db.DateTime)
-    url = db.Column(db.String(255))
-
-    def __init__(self, area, url, last_modified=None):
-        self.area = area
-        self.url = url
-        if last_modified is None:
-            last_modified = datetime.utcnow()
-        self.last_modified = last_modified
-
-    def __repr__(self):
-        return 'Source for %r was last modified on %r' % (self.area, self.last_modified)
-
-
-# Functions to return or normalise data for the database insertion
 
 def post_to_area(postcode):
     """takes a postcode, returns area code"""
@@ -187,7 +119,7 @@ def resources_list(url):
         dt_last_modified = datetime.strptime(dt_last_modified, "%Y-%m-%d %H:%M:%S.%f")
         url = entry['url']
         area = entry['description']
-        source = FciSources(area, url, dt_last_modified)
+        source = db.FciSources(area, url, dt_last_modified)
         final_list.append(source)
     return final_list
 
@@ -219,8 +151,7 @@ def update_sources():
     start_url = 'http://data.gov.uk/api/2/rest/package/uk-food-hygiene-rating-data'
     all_areas_data = resources_list(start_url)
     # drop fcisources table
-    db.drop_all()
-    db.create_all()
+
     for s in all_areas_data:
         db.session.add(s)
     db.session.commit()
@@ -257,7 +188,7 @@ def update_fci():
     """
         updates the fciindex table
     """
-    results = db.session.query(Locations.postcode)
+    results = db.session.query(db.Locations.postcode)
     results = results.all()
     postcodes = sorted(set(results))
     maximum = 0.0

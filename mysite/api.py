@@ -1,7 +1,7 @@
 __author__ = 'ciacicode'
 
 
-from modules.fci import *
+from modules.db_models import *
 from flask import request
 from flask import jsonify
 from mysite import app

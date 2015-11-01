@@ -12,18 +12,25 @@
     </form>
   {% endif %}
   <tr class=entries>
-  {% for entry in entries %}
-    <td><h1>{{ entry.title }}</h1></td>
-    <td><p>{{ entry.text|safe }}</p></td>
-
+  {% for post in paginated.items %}
+    <td><h1><a href="{{ url_for('show_post', slug=post.slug)}}">{{ post.title }}</a></h1></td>
+    <td><p>{{ post.text|safe }}</p></td>
   {% else %}
     <em>Unbelievable.  No entries here so far</em>
 
   {% endfor %}
   </tr>
-{{pagination.links}}
-{% endblock %}
 
-{% block js %}
-  $('#entries-url').addClass('active');
+<div class="pagination row">
+  <div class="six columns">
+{% if paginated.has_prev %}
+    <a href="{{ url_for('show_entries', page=paginated.prev_num) }}"><< Previous</a>
+{% endif %}
+    </div>
+{% if paginated.has_next %}
+  <div class="six columns">
+    <a href="{{ url_for('show_entries', page=paginated.next_num) }}">Next >></a>
+  </div>
+{% endif %}
+</div>
 {% endblock %}

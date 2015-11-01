@@ -1,43 +1,16 @@
 __author__ = 'ciacicode'
 
-import sqlite3
-from contextlib import closing
-import time
-from flask import request, session, g, redirect, url_for, abort, render_template
+from flask import request, session, g, redirect, url_for, abort, render_template, copy_current_request_context
 from modules.fci_form import PostcodeInput
 from modules.loginform import LoginForm
-from flask_paginate import Pagination
+from modules.db_models import *
 from modules.charts import *
+from modules.blog import *
 from modules.fci import *
 from mysite import app
+import pdb
 from mysite.configs.khal_config import Config
 
-
-
-# manage db connections for microblog
-def connect_db():
-    return sqlite3.connect(app.config['DATABASE'])
-
-
-def init_db():
-    with closing(connect_db()) as db:
-        with app.open_resource(Config.SQLSCHEMA, mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-
-
-# handling requests
-@app.before_request
-def before_request():
-    g.db = connect_db()
-    g.cur = g.db.cursor()
-
-
-@app.teardown_request
-def teardown_request(exception):
-    db = getattr(g, 'db', None)
-    if db is not None:
-        db.close()
 
 #views
 @app.route('/')
@@ -62,31 +35,23 @@ def fci_form():
         return render_template('fci_form.html', form=form, error=error, map=div, script=script)
 
 
-@app.route('/blog')
-def show_entries():
-    g.cur.execute('select count(*) from entries')
-    total = g.cur.fetchone()[0]
-    page, per_page, offset = get_page_items()
-    sql = 'select title, text from entries order by date desc limit {}, {}'\
-        .format(offset, per_page)
-    g.cur.execute(sql)
-    entries = [dict(title=row[0], text=row[1]) for row in g.cur.fetchall()]
-    pagination = get_pagination(page=page,
-                                per_page=per_page,
-                                record_name='entries',
-                                total=total,
-                                format_total=True,
-                                format_number=True)
-    return render_template('show_entries.html', entries=entries, page=page, per_page=per_page, pagination=pagination)
+@app.route("/blog/", defaults={'page': 1}, methods=["GET", "POST"])
+@app.route("/blog/<int:page>/", methods=["GET", "POST"])
+def show_entries(page=1):
+    paginated = Entries.query.order_by(Entries.date).paginate(page, app.config['PER_PAGE'], False)
+    return render_template('show_entries.html', paginated=paginated)
+
+@app.route("/blog/<slug>")
+def show_post(slug):
+    entry = Entries.query.filter_by(slug = slug).first_or_404()
+    return render_template('entry_detail.html', entry = entry)
 
 
 @app.route('/add', methods=['POST'])
 def add_entry():
     if not session.get('logged_in'):
         abort(401)
-    g.db.execute('insert into entries (title, text, date) values (?, ?, ?)',
-                 [request.form['title'], request.form['text'], time.strftime('%Y-%m-%d %H:%M:%S')])
-    g.db.commit()
+    add_blog_post(request.form['title'], request.form['text'])
     return redirect(url_for('show_entries'))
 
 
@@ -112,37 +77,3 @@ def login():
 def logout():
     session.pop('logged_in', None)
     return redirect(url_for('show_entries'))
-
-
-# helper functions for pagination
-def get_css_framework():
-    return app.config['CSS_FRAMEWORK']
-
-
-def get_link_size():
-    return app.config['LINK_SIZE']
-
-
-def show_single_page_or_not():
-    return app.config['SHOW_SINGLE_PAGE']
-
-
-def get_page_items():
-    page = int(request.args.get('page', 1))
-    per_page = request.args.get('per_page')
-    if not per_page:
-        per_page = app.config['PER_PAGE']
-    else:
-        per_page = int(per_page)
-
-    offset = (page - 1) * per_page
-    return page, per_page, offset
-
-
-def get_pagination(**kwargs):
-    kwargs.setdefault('record_name', 'records')
-    return Pagination(css_framework=get_css_framework(),
-                      link_size=get_link_size(),
-                      show_single_page=show_single_page_or_not(),
-                      **kwargs
-                      )
