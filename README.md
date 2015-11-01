@@ -8,14 +8,7 @@ This is a flask application that handles my website. It features:
 * Fried Chicken Index RESTful API
 
 ##Requirements
-* Flask 0.10.1
-* Python 2.7.9
-* Flask-WTF
-* Flask-Paginate
-* SQLAlchemy
-* Flask-SQLAlchemy
-* Contextlib
-* Bokeh 0.9.3
+Available in requirements.txt
 
 
 
