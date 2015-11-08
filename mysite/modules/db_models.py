@@ -4,9 +4,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from mysite.configs.khal_config import Config
-from mysite.modules import blog
 from flask_wtf import Form
 from wtforms import StringField, validators, SubmitField
+import re
+import translitcodec
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -84,7 +85,7 @@ class Entries(db.Model):
         self.title = title
         self.text = text
         self.date = datetime.utcnow()
-        self.slug = blog.slugify(self.title)
+        self.slug = slugify(self.title)
 
 
 
@@ -112,3 +113,18 @@ class PostcodeInput(Form):
     submit = SubmitField('Submit')
 
 
+def slugify(text, delim=u'-'):
+    _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
+    """Generates an ASCII-only slug."""
+    result = []
+    for word in _punct_re.split(text.lower()):
+        word = word.encode('translit/long')
+        if word:
+            result.append(word)
+    return unicode(delim.join(result))
+
+
+def add_blog_post(title, text):
+    post = Entries(title,text)
+    db.session.add(post)
+    db.session.commit()
