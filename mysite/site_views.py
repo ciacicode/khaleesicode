@@ -36,7 +36,7 @@ def fci_form():
 @app.route("/blog/", defaults={'page': 1}, methods=["GET", "POST"])
 @app.route("/blog/<int:page>/", methods=["GET", "POST"])
 def show_entries(page=1):
-    paginated = Entries.query.order_by(Entries.date).paginate(page, app.config['PER_PAGE'], False)
+    paginated = Entries.query.order_by(Entries.date.desc()).paginate(page, app.config['PER_PAGE'], False)
     return render_template('show_entries.html', paginated=paginated)
 
 @app.route("/blog/<slug>")
