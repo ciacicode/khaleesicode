@@ -4,7 +4,6 @@ from flask import request, session, g, redirect, url_for, abort, render_template
 from modules.loginform import LoginForm
 from modules.db_models import *
 from modules.charts import *
-from modules.blog import *
 from modules.fci import *
 from mysite import app
 import pdb
