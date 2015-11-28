@@ -2,6 +2,7 @@ __author__ = 'ciacicode'
 
 
 from modules.db_models import *
+from modules.fci import postcodes_return, post_to_area, fci_object_return
 from flask import request
 from flask import jsonify
 from mysite import app

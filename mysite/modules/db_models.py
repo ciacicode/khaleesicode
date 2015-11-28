@@ -4,6 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from mysite.configs.khal_config import Config
+from mysite.modules import blog
 from flask_wtf import Form
 from wtforms import StringField, validators, SubmitField
 import re
@@ -85,7 +86,7 @@ class Entries(db.Model):
         self.title = title
         self.text = text
         self.date = datetime.utcnow()
-        self.slug = slugify(self.title)
+        self.slug = blog.slugify(self.title)
 
 
 
