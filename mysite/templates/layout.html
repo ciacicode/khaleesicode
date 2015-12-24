@@ -1,9 +1,23 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Khaleesicode is a python code playground where code queens hangout, for the moment the only code queen in there is Maria Cerase.">
+    <meta name="author" content="Maria Cerase">
+    <title itemprop='name'>Khaleesicode</title>
+     <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/docco.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
@@ -20,12 +34,6 @@
     <!--bokeh script for chart-->
         {{script|safe}}
     <!--end of bokeh script-->
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Khaleesicode is a python code playground where code queens hangout, for the moment the only code queen in there is Maria Cerase.">
-    <meta name="author" content="Maria Cerase">
-    <title itemprop='name'>Khaleesicode</title>
-
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul class="flashes">
@@ -46,27 +54,13 @@
    </script>
     <script>hljs.initHighlightingOnLoad();</script>
 </head>
-<div class="container">
-    <div class="navbar-spacer"> </div>
-    <nav class="navbar">
-        <div class="container">
-            <ul class="navbar-list">
-                <li class="navbar-item"> <a class="navbar-link" href="{{ url_for('index') }}">Home</a></li>
-                <li class="navbar-item"> <a class="navbar-link" href="{{ url_for('fci_form') }}">FCI</a></li>
-                <li class="navbar-item"> <a class="navbar-link" href="{{ url_for('show_entries') }}">Blog</a></li>
-                {% if not session.logged_in %}
-                <li class="navbar-item"><a class="navbar-link" href="{{ url_for('login') }}">Log in</a></li>
-                {% else %}
-                <li class="navbar-item"><a class="navbar-link" href="{{ url_for('logout') }}">Log out</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
+
+    {% block nav %}{% endblock %}
     {% for message in get_flashed_messages() %}
     <div class=flash>{{ message }}</div>
     {% endfor %}
+      </div>
 
-</div>
 <div class="container">
     <div class="row">
         <div class="two-thirds column">

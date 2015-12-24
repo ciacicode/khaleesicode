@@ -53,6 +53,9 @@ def add_entry():
     add_blog_post(request.form['title'], request.form['text'])
     return redirect(url_for('show_entries'))
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
