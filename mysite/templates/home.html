@@ -7,7 +7,7 @@
 <section>
     {% for post in paginated.items %}
     <article>
-    <td><h3><a href="{{ url_for('show_post', slug=post.slug)}}">{{ post.title }}</a></h3></td>
+    <td><h4><a href="{{ url_for('show_post', slug=post.slug)}}">{{ post.title }}</a></h4></td>
     <td><p>{{ post.text|safe }}</p></td>
     </article>
     {% endfor %}
@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block homemedia %}
-<h1>{ }</h1>
+ <code>>>> python</code>
 {% endblock %}
 
 
