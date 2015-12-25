@@ -12,9 +12,10 @@ from mysite.configs.khal_config import Config
 
 
 #views
-@app.route('/')
-def index():
-    return render_template('home.html')
+@app.route('/', defaults={'page': 1})
+def index(page=1):
+    paginated = Entries.query.order_by(Entries.date.desc()).paginate(page, app.config['PER_PAGE'], False)
+    return render_template('home.html', paginated=paginated)
 
 
 @app.route('/fci', methods=['GET', 'POST'])
@@ -42,8 +43,8 @@ def show_entries(page=1):
 
 @app.route("/blog/<slug>")
 def show_post(slug):
-    entry = Entries.query.filter_by(slug = slug).first_or_404()
-    return render_template('entry_detail.html', entry = entry)
+    entry = Entries.query.filter_by(slug=slug).first_or_404()
+    return render_template('entry_detail.html', entry=entry)
 
 
 @app.route('/add', methods=['POST'])
