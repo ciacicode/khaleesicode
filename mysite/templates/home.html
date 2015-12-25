@@ -1,22 +1,23 @@
 {% extends 'layout.html' %}
 {% block homecontent %}
-<section>
+<section xmlns="http://www.w3.org/1999/html">
 	 <header><h1>Welcome to Khaleesicode</h1></header><br>
-	 <p>This is a Flask application that I use to play around with Python code. I will create applications with python
-         and will embed them in this flask site to display them. At the moment there are only two working applications
-         on this site:</p>
-        <ul>
-            <li><a href="{{ url_for('fci_form') }}">FCI</a>, a silly yet fun app that shows the percentage of
-                Fried Chicken Shops on all restaurants in a specific London Postcode.</li>
-            <li>A Microblog application</li>
-        </ul>
-    <h5>About Me</h5>
-    <p>My name is Maria Cerase, i am a product manager working in London's tech start-up scene and Khaleesicode is my techy side. </p>
+	 <p>This is a Flask site that I use to play around with Python code. I will create features, blogposts and applications as I go along. <a href="{{ url_for('fci_form') }}">FCI</a> is a silly app and <a href="{{ url_for('api_fci') }}">API</a> that shows the percentage of Fried Chicken Shops on all restaurants in a specific London Postcode. </p>
+</section>
+<section>
+    {% for post in paginated.items %}
+    <article>
+    <td><h4><a href="{{ url_for('show_post', slug=post.slug)}}">{{ post.title }}</a></h4></td>
+    <td><p>{{ post.text|safe }}</p></td>
+    </article>
+    {% endfor %}
+    <p>Read the rest of the <a href="{{ url_for('show_entries')}}">blog here</a>.</p>
 </section>
 {% endblock %}
 
 {% block homemedia %}
-<h1>{ }</h1>
+ <code>>>> python</code>
 {% endblock %}
+
 
 

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block homecontent %}
+<section>
+    <h3>About</h3>
+    <p>My name is <a href="https://plus.google.com/+MariaCerase" target="_blank">Maria Cerase</a>, I am a product manager working in London's tech start-up scene and Khaleesicode is my geeky side.
+    I started to program only recently. In late
+    2014 I started studying computer science on <a href="https://edx.org" target="_blank">Edx</a> with CS50x a course by Harvardx.
+    The course was teaching C, and despite having passed 50% of the course I did not finish it. I took programming again, this
+    time with Python in early 2015 with MITx and that's when I fell in love with the language and programming. I finished on my own <a href="https://courses.edx.org/courses/MITx/6.00.1x_5/1T2015/info">6.00.1x</a> and completed with a certification, <a href="https://courses.edx.org/courses/course-v1:MITx+6.00.2x_4+3T2015/info">6.00.2x</a> that focuses on Data Science and computational thinking.
+    </p>
+    <p>Data, science and programming are at the core of my motivation for continuous study and improvement.</p>
+    <div class="row">
+        <div class="twelve columns">
+            <div class="two columns offset-by-five">
+                <p><a href="https://github.com/ciacicode"><img border="0" src="{{ url_for('static', filename='images/GitHub-Mark-64px.png') }}" width="32" height="32"></a>   <a href="http://uk.linkedin.com/in/mariacerase"><img border="0" src="{{ url_for('static', filename='images/In-Black-34px-R.png') }}" width="38" height="32"></a>
+    </p>
+            </div>
+        </div>
+    </div>
+
+</section>
+<script type="application/ld+json">
+{ "@context" : "http://schema.org",
+  "@type" : "Organization",
+  "name" : "Khaleesicode.com",
+  "url" : "https://www.khaleesicode.com",
+  "sameAs" :
+    "http://plus.google.com/+MariaCerase",
+    "https://github.com/ciacicode"]
+}
+</script>
+
+{% endblock %}

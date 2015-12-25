@@ -2,7 +2,7 @@ __author__ = 'ciacicode'
 
 
 from modules.db_models import *
-from modules.fci import postcodes_return, post_to_area, fci_object_return
+from modules.fci import postcodes_return, post_to_area, fci_object_return, find_max
 from flask import request
 from flask import jsonify
 from mysite import app
@@ -43,19 +43,15 @@ def api_fci():
     else:
         resp = jsonify(
             {
-    "url": "http://www.khaleesicode.com/api/fci",
+    "url": "https://www.khaleesicode.com/api/fci",
     "description": "Returns FCI value for a given postcode as GET parameter api.mysite.com/fci?postcode=<postcode>",
     "resources": {
         "postcodes": {
-            "url": "http://www.khaleesicode.com/api/fci/postcodes",
+            "url": "https://www.khaleesicode.com/api/fci/postcodes",
             "description":"Returns list of postcodes comprised in the FCI"
         },
-        "history": {
-            "url": "http://www.khaleesicode.com/api/fci/history",
-            "description": "Returns the known history of FCI values for a given postcode. It requires GET parameter postcode as api.mysite.com/fci/history?postcode=<postcode>"
-        },
         "maximum": {
-            "url": "http://www.khaleesicode.com/api/fci/maximum",
+            "url": "https://www.khaleesicode.com/api/fci/maximum",
             "description": "Returns the postcode associated with the maximum value of FCI as of latest available information",
         },
     },
