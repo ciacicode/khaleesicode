@@ -1,14 +1,14 @@
 __author__ = 'ciacicode'
 
-from flask import request, session, g, redirect, url_for, abort, render_template, copy_current_request_context
+from flask import request, session, redirect, url_for, abort, render_template
 from modules.loginform import LoginForm
-from modules.db_models import *
 from modules.charts import *
-from modules.blog import *
 from modules.fci import *
 from mysite import app
+import requests
+import json
 import pdb
-from mysite.configs.khal_config import Config
+
 
 
 #views
@@ -24,9 +24,9 @@ def fci_form():
     form = PostcodeInput(request.form)
     if form.validate_on_submit():
         # handle user input
-        postcode = request.form['postcode']
-        # calculate fci
-        result = fci_return(postcode)
+        postcode = str(request.form['postcode'])
+        response = fci_object_return(postcode)
+        result = response['fci']
         return render_template('fci_form.html', form=form, result=result, map=div, script=script)
     elif request.method == 'GET':
         return render_template('fci_form.html', form=form, map=div, script=script)

@@ -44,7 +44,7 @@ def api_fci():
         resp = jsonify(
             {
     "url": "https://www.khaleesicode.com/api/fci",
-    "description": "Returns FCI value for a given postcode as GET parameter api.mysite.com/fci?postcode=<postcode>",
+    "description": "Returns FCI value for a given postcode as GET parameter khaleesicode.com/api/fci?postcode=<postcode>",
     "resources": {
         "postcodes": {
             "url": "https://www.khaleesicode.com/api/fci/postcodes",
