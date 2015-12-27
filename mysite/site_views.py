@@ -5,9 +5,7 @@ from modules.loginform import LoginForm
 from modules.charts import *
 from modules.fci import *
 from mysite import app
-import requests
-import json
-import pdb
+
 
 
 
@@ -22,6 +20,8 @@ def index(page=1):
 def fci_form():
     error = None
     form = PostcodeInput(request.form)
+    script = open_chart()[0]
+    div = open_chart()[1]
     if form.validate_on_submit():
         # handle user input
         postcode = str(request.form['postcode'])
