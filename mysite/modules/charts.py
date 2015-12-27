@@ -62,7 +62,7 @@ def create_chart_data():
 
 def save_chart(components):
 #save div and script to files...
-    with open('/home/maria/Desktop/ciacicode/khaleesicode/mysite/templates/chart.html', 'w+') as c:
+    with open(Config.FCICHART, 'w+') as c:
         c.write(components[0])
         c.write(components[1])
 
@@ -72,7 +72,7 @@ def open_chart():
 
     :return: script and div strings as tuple
     """
-    with open('/home/maria/Desktop/ciacicode/khaleesicode/mysite/templates/chart.html', 'r') as html:
+    with open(Config.FCICHART, 'r') as html:
         soup = BeautifulSoup(html, "lxml")
         script = soup.script
         div = soup.div
