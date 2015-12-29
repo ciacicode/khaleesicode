@@ -2,19 +2,32 @@ __author__ = 'ciacicode'
 import os
 from mysite import app
 import unittest
-import tempfile
+import pdb
 
-class TestDb(unittest.TestCase):
+class KhalTests(unittest.TestCase):
 
     def setUp(self):
-        self.db_fd, flaskr.app.config['DATABASE'] = tempfile.mkstemp()
-        flaskr.app.config['TESTING'] = True
-        self.app = flaskr.app.test_client()
-        flaskr.init_db()
+        self.app = app.test_client()
 
-    def tearDown(self):
-        os.close(self.db_fd)
-        os.unlink(flaskr.app.config['DATABASE'])
+    def login(self, username, password):
+        return self.app.post('/login', data=dict(
+            username=username,
+            password=password
+        ), follow_redirects=True)
+
+    def logout(self):
+        return self.app.get('/logout', follow_redirects=True)
+
+    def test_login_logout(self):
+        rv = self.login(app.config['USERNAME'], app.config['PASSWORD'])
+        print rv.data
+        assert 'You were logged in' in rv.data
+        rv = self.logout()
+        assert 'You were logged out' in rv.data
+        rv = self.login('adminx', app.config['password'])
+        assert 'Invalid credentials' in rv.data
+        rv = self.login(app.config['USERNAME'], 'defaultx')
+        assert 'Invalid credentials'in rv.data
 
 if __name__ == '__main__':
     unittest.main()

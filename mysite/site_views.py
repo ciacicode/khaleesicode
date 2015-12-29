@@ -1,15 +1,14 @@
 __author__ = 'ciacicode'
 
-from flask import request, session, redirect, url_for, abort, render_template
+from flask import request, session, redirect, url_for, abort, render_template, flash
 from modules.loginform import LoginForm
 from modules.charts import *
 from modules.fci import *
 from mysite import app
 
-
-
-
 #views
+
+
 @app.route('/', defaults={'page': 1})
 def index(page=1):
     paginated = Entries.query.order_by(Entries.date.desc()).paginate(page, app.config['PER_PAGE'], False)
@@ -41,6 +40,7 @@ def show_entries(page=1):
     paginated = Entries.query.order_by(Entries.date.desc()).paginate(page, app.config['PER_PAGE'], False)
     return render_template('show_entries.html', paginated=paginated)
 
+
 @app.route("/blog/<slug>")
 def show_post(slug):
     entry = Entries.query.filter_by(slug=slug).first_or_404()
@@ -54,11 +54,13 @@ def add_entry():
     add_blog_post(request.form['title'], request.form['text'])
     return redirect(url_for('show_entries'))
 
+
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+
+@app.route('/login', methods=['GET','POST'])
 def login():
     error = None
     form = LoginForm(request.form)
@@ -72,6 +74,7 @@ def login():
                 error = 'Invalid credentials'
             else:
                 session['logged_in'] = True
+                flash('You were logged in')
                 return redirect(url_for('show_entries'))
     return render_template('login.html', form=form, error=error)
 
@@ -79,4 +82,5 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
+    flash('You were logged out')
     return redirect(url_for('show_entries'))

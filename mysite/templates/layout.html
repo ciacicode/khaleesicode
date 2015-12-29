@@ -31,30 +31,17 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <!--bokeh script for chart-->
-        {{script|safe}}
-    <!--end of bokeh script-->
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class="flashes">
-        {% for message in messages %}
-        <li> {{message}}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-8562021-3', 'auto');
-      ga('send', 'pageview');
-   </script>
-    <script>hljs.initHighlightingOnLoad();</script>
 </head>
-
+ {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                  <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
     <nav class="navbar">
         <div class="container">
             <ul class="navbar-list">
@@ -70,14 +57,12 @@
             </ul>
         </div>
     </nav>
-    {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
-    {% endfor %}
-      </div>
+
 
 <div class="container">
     <div class="row">
         <div class="two-thirds column">
+        </div>
             {% block homecontent %}{% endblock %}
         </div>
         <div class="one-third column">
@@ -85,9 +70,6 @@
         </div>
         <article>{%block post%}{%endblock%}</article>
         <article>{%block entry%}{%endblock%}</article>
-        <script type="text/javascript">
-      {% block js %}{% endblock %}
-    </script>
     </div>
 </div>
 <div class="container">
@@ -100,6 +82,19 @@
     </div>
 </div>
 </body>
+    <!--bokeh script for chart-->
+        {{script|safe}}
+    <!--end of bokeh script-->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-8562021-3', 'auto');
+      ga('send', 'pageview');
+   </script>
+    <script>hljs.initHighlightingOnLoad();</script>
 </html>
 
 
