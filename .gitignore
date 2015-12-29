@@ -77,8 +77,12 @@ config.cfg
 *.md~
 .gitignore~
 *.~
+
 #Static files
 
 # runserver
 runserver.py
 *.csv
+
+#certs
+certs/
