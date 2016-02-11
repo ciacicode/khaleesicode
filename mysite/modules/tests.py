@@ -2,32 +2,48 @@ __author__ = 'ciacicode'
 import os
 from mysite import app
 import unittest
+from flask import url_for, session
 import pdb
 
 class KhalTests(unittest.TestCase):
 
     def setUp(self):
+        app.config['SECRET_KEY'] = 'sekrit!'
+        app.config['TESTING'] = True
+        app.config['WTF_CSRF_ENABLED'] = False
+        app.config['SESSION_COOKIE_DOMAIN'] = None
         self.app = app.test_client()
 
     def login(self, username, password):
-        return self.app.post('/login', data=dict(
+        return self.app.post(url_for('login'), data=dict(
             username=username,
-            password=password
-        ), follow_redirects=True)
+            password=password), follow_redirects=True)
 
     def logout(self):
         return self.app.get('/logout', follow_redirects=True)
 
     def test_login_logout(self):
-        rv = self.login(app.config['USERNAME'], app.config['PASSWORD'])
-        print rv.data
-        assert 'You were logged in' in rv.data
-        rv = self.logout()
-        assert 'You were logged out' in rv.data
-        rv = self.login('adminx', app.config['password'])
-        assert 'Invalid credentials' in rv.data
-        rv = self.login(app.config['USERNAME'], 'defaultx')
-        assert 'Invalid credentials'in rv.data
+        with app.app_context():
+            with app.test_request_context() as ctx:
+                rv = self.login(app.config['USERNAME'], app.config['PASSWORD'])
+                assert 'You were logged in' in rv.data
+                print 'Login success'
+                rv = self.login('wrongusername','wrongpassword')
+                assert 'You were logged in' not in rv.data
+                print 'Login failure'
+                rv = self.login('wrongusername', app.config['PASSWORD'])
+                assert 'You were logged in' not in rv.data
+                print 'Login failure'
+                rv = self.login(app.config['USERNAME'], 'wrongpassword')
+                assert 'You were logged in' not in rv.data
+                print 'Login failure'
+                # test logout
+                rv = self.logout()
+                assert 'You were logged out' in rv.data
+                print 'Logout success'
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
