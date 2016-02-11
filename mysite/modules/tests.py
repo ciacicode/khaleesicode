@@ -24,7 +24,7 @@ class KhalTests(unittest.TestCase):
 
     def test_login_logout(self):
         with app.app_context():
-            with app.test_request_context() as ctx:
+            with app.test_request_context():
                 rv = self.login(app.config['USERNAME'], app.config['PASSWORD'])
                 assert 'You were logged in' in rv.data
                 print 'Login success'
@@ -41,6 +41,13 @@ class KhalTests(unittest.TestCase):
                 rv = self.logout()
                 assert 'You were logged out' in rv.data
                 print 'Logout success'
+
+
+    def test_api_root(self):
+        with app.app_context():
+            with app.test_request_context():
+                rv = self.app.get('/api')
+                assert rv.status_code is 200
 
 
 
