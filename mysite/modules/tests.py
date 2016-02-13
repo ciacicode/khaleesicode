@@ -2,7 +2,9 @@ __author__ = 'ciacicode'
 import os
 from mysite import app
 import unittest
-from flask import url_for, session
+import json
+from flask import url_for
+import random as random
 import pdb
 
 class KhalTests(unittest.TestCase):
@@ -22,32 +24,76 @@ class KhalTests(unittest.TestCase):
     def logout(self):
         return self.app.get('/logout', follow_redirects=True)
 
+
+    def add_post(self, title, text):
+        return self.app.post(url_for('add_entry'), data=dict(
+        title=title,
+        text=text), follow_redirects=True)
+
+
+    #test blog login
     def test_login_logout(self):
         with app.app_context():
             with app.test_request_context():
                 rv = self.login(app.config['USERNAME'], app.config['PASSWORD'])
                 assert 'You were logged in' in rv.data
-                print 'Login success'
+                rv = self.add_post('annoying title', 'Lorem Ipsum Text')
+                assert rv.status_code is 200
                 rv = self.login('wrongusername','wrongpassword')
                 assert 'You were logged in' not in rv.data
-                print 'Login failure'
                 rv = self.login('wrongusername', app.config['PASSWORD'])
                 assert 'You were logged in' not in rv.data
-                print 'Login failure'
                 rv = self.login(app.config['USERNAME'], 'wrongpassword')
                 assert 'You were logged in' not in rv.data
-                print 'Login failure'
                 # test logout
                 rv = self.logout()
                 assert 'You were logged out' in rv.data
-                print 'Logout success'
+
+    #test site pages
+
+    def test_site_views(self):
+        with app.app_context():
+            with app.test_request_context():
+                rv = self.app.get('/')
+                assert rv.status_code is 200
+                rv = self.app.get('/login')
+                assert rv.status_code is 200
+                rv = self.app.get('/about')
+                assert rv.status_code is 200
+                rv = self.app.get('/blog/')
+                assert rv.status_code is 200
+                assert rv.data is not None
+                rv = self.app.get('/fci')
+                assert rv.status_code is 200
 
 
-    def test_api_root(self):
+    # test api endpoints are working
+    def test_api_endpoints(self):
         with app.app_context():
             with app.test_request_context():
                 rv = self.app.get('/api')
                 assert rv.status_code is 200
+                rv = self.app.get('/api/fci')
+                assert rv.status_code is 200
+                rv = self.app.get('/api/fci/postcodes')
+                assert rv.status_code is 200
+                rv = self.app.get('/api/fci/maximum')
+                assert rv.status_code is 200
+
+    #test fci is returned with postcode argument
+    def test_api_postcode_arg(self):
+        with app.app_context():
+            with app.test_request_context():
+                #get a postcode from the api
+                rv = self.app.get('/api/fci/postcodes')
+                res = json.loads(rv.data.decode('utf-8'))
+                all_postcodes = res['postcodes']
+                ps = random.choice(all_postcodes)
+                req_url = '/api/fci?postcode=' + ps
+                #test endpoint
+                rv = self.app.get(req_url)
+                assert rv.status_code is 200
+                assert 'fci' in rv.data
 
 
 
