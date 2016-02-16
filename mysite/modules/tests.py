@@ -5,6 +5,7 @@ import unittest
 import json
 from flask import url_for
 import random as random
+from mysite.modules.db_models import Entries
 import pdb
 
 class KhalTests(unittest.TestCase):
@@ -14,6 +15,7 @@ class KhalTests(unittest.TestCase):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         app.config['SESSION_COOKIE_DOMAIN'] = None
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/maria/Desktop/ciacicode/khaleesicode/mysite/test.db'
         self.app = app.test_client()
 
     def login(self, username, password):
@@ -30,14 +32,13 @@ class KhalTests(unittest.TestCase):
         title=title,
         text=text), follow_redirects=True)
 
-
     #test blog login
     def test_login_logout(self):
         with app.app_context():
             with app.test_request_context():
                 rv = self.login(app.config['USERNAME'], app.config['PASSWORD'])
                 assert 'You were logged in' in rv.data
-                rv = self.add_post('annoying title', 'Lorem Ipsum Text')
+                rv = self.add_post('Test Title', 'Test Text')
                 assert rv.status_code is 200
                 rv = self.login('wrongusername','wrongpassword')
                 assert 'You were logged in' not in rv.data
