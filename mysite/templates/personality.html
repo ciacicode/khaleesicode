@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block personality %}
+{{script|safe}}
+<section>
+	<header><h1>Personality Traits by Watson</h1><br></header>
+	<form action="{{ url_for('fci_form')}}" method='POST'>
+		<p>Test for personality traits </p><br>
+		<p>Enter your Linkedin Profile</p>
+		<section>
+			{% if error %}
+			<p class="error"><strong>Error: </strong>{{error}}</p>
+			{% endif %}
+			{{form.csrf_token}}
+			{{form.postcode}}
+			{{form.submit}}
+		</section>
+	</form>
+</section>
+
+{% endblock %}
+
+{% block traits %}
+
+	<section>
+		<h4>{{traits}}</h4>
+	</section>
+
+{% endblock %}
