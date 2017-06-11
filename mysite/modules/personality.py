@@ -25,14 +25,27 @@ def get_personality_insights(profile):
     personality = personality_insights.profile(profile,
                                                content_type='text/plain;charset=utf-8',
                                                raw_scores=True, consumption_preferences=True)
-    pdb.set_trace()
-    #serialise to string
+    #serialise to string and then to object
     result = json.loads(json.dumps(personality))
     return result
 
-def generate_chart_data():
+def generate_data(insights, category='needs'):
     """
     personality_insights: as json from watson
+    category: one between needs (default), consumption_preferences, values, personality
     returns data: ready for chart display
     """
-    pass
+    #category
+    data = insights[category]
+    #generate dimensions of each category to be used as labels
+    labels = list()
+    raw_scores = list()
+    percentiles = list()
+    for dimension in data:
+        #create array of data
+        labels.append(dimension['name'])
+        raw_scores.append(dimension['raw_score'])
+        percentiles.append(dimension['percentile'])
+    #craft output data Structure
+    chart_data = dict([('labels', labels), ('raw_scores', raw_scores), ('percentiles', percentiles)])
+    return chart_data
