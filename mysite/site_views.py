@@ -5,6 +5,7 @@ from modules.loginform import LoginForm
 from modules.charts import *
 from modules.fci import *
 from mysite import app
+import pdb
 
 #views
 
@@ -84,3 +85,20 @@ def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('show_entries'))
+
+@app.route('/personality', methods=['GET','POST'])
+def personality():
+    from modules.personality import Profile, get_personality_insights
+    error = None
+    form = Profile(request.form)
+    if form.validate_on_submit():
+        # handle user input
+        profile_text = (request.form['profile']).encode('utf-8')
+        #pass the profile to ibm watson api
+        result = get_personality_insights(profile_text)
+        return render_template('personality.html', form=form, error=error, result=result)
+    elif request.method == 'GET':
+        return render_template('personality.html', form=form, error=error)
+    else:
+        error = 'Enter valid text and not junj'
+        return render_template('personality.html', form=form, error=error)

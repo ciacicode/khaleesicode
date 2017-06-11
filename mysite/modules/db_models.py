@@ -113,10 +113,6 @@ class PostcodeInput(Form):
                                         validators.Length(min=2, max=10)])
     submit = SubmitField('Submit')
 
-# class for Personality form
-class ProfileInput(Form):
-    pass
-
 
 def slugify(text, delim=u'-'):
     _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
