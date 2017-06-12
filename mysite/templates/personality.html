@@ -15,63 +15,10 @@
 		<p>Powered by IBM Watson Personality Insights</p>
 	</form>
 </section>
-
-{% endblock %}
-
-{% block radar_chart %}
-<canvas id="myRadarChart" width="400" height="400"></canvas>
-
-<script>
-var ctx = document.getElementById("myRadarChart");
-var data = {
-	//passin labels as label object from views
-	labels:[{% for item in labels %}
-                  "{{item}}",
-              {% endfor %}],
-	datasets:[{
-		label:"Raw Score",
-		data: [{% for item in raw_scores %}
-                      {{item}},
-                    {% endfor %}],
-		fill:true,
-		backgroundColor:"rgba(255, 99, 132, 0.2)",
-		borderColor:"rgb(255, 99, 132)",
-		pointBackgroundColor:"rgb(255, 99, 132)",
-		pointBorderColor:"#fff",
-		pointHoverBackgroundColor:"#fff",
-		pointHoverBorderColor:"rgb(255, 99, 132)"},
-		{
-			label:"Percentile",
-			data:[{% for item in percentiles %}
-	                      {{item}},
-	                    {% endfor %}],
-			fill:true,
-			backgroundColor:"rgba(54, 162, 235, 0.2)",
-			borderColor:"rgb(54, 162, 235)",
-			pointBackgroundColor:"rgb(54, 162, 235)",
-			pointBorderColor:"#fff",
-			pointHoverBackgroundColor:"#fff",
-			pointHoverBorderColor:"rgb(54, 162, 235)"}
-		]
-	};
-
-var options = {
-	elements:{
-		line:{
-			tension:0,
-			borderWidth:3
-		}
-	}
-};
-
-var myRadarChart = new Chart(ctx, {
-	type:"radar",
-	data: data,
-	options: options
-});
-
-
-
-</script>
+<section>
+	<div class="row">
+		<div class="two-thirds column"> {% block radar_chart %} {% endblock %}</div>
+	</div>
+</section>
 
 {% endblock %}

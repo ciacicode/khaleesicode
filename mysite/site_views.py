@@ -1,4 +1,5 @@
 __author__ = 'ciacicode'
+# -*- coding: utf-8 -*-
 
 from flask import request, session, redirect, url_for, abort, render_template, flash
 from modules.loginform import LoginForm
@@ -88,20 +89,17 @@ def logout():
 
 @app.route('/personality', methods=['GET','POST'])
 def personality():
-    from modules.personality import Profile, get_personality_insights, generate_data
+    from modules.personality import Profile, get_personality_insights, generate_all_data
     error = None
     form = Profile(request.form)
     if form.validate_on_submit():
         # handle user input
         profile_text = (request.form['profile']).encode('utf-8')
         #pass the profile to ibm watson api
-        insights = get_personality_insights(profile_text)
+        all_data = get_personality_insights(profile_text)
         #pass the insights to the chart generating function
-        data = generate_data(insights,'needs')
-        labels = data['labels']
-        raw_scores = data['raw_scores']
-        percentiles = data['percentiles']
-        return render_template('personality.html', form=form, error=error, labels=labels, raw_scores=raw_scores, percentiles=percentiles)
+        insights = generate_all_data(all_data)
+        return render_template('personality_result.html', form=form, error=error, insights=insights)
     elif request.method == 'GET':
         return render_template('personality.html', form=form, error=error)
     else:

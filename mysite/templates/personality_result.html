@@ -1,0 +1,91 @@
+{% extends 'personality.html' %}
+{% block radar_chart %}
+
+<div id="charts" class="container">
+  <div class="row">
+    <div class="four columns">
+			<canvas id="needs" width=100% height=100%></canvas>
+		</div>
+		<div class="four columns">
+				<canvas id="values" width=100% height=100%></canvas>
+		</div>
+		<div class="four columns">
+			<canvas id="personality" width=100% height=100%></canvas>
+		</div>
+</div>
+
+<script>
+//options for all charts
+var options = {
+    elements:{
+      line:{
+        tension:0,
+        borderWidth:3
+      }
+    }
+  };
+
+
+function chartGeneration(insights){
+  var charts = [{% for chart in insights.keys() %}
+  										"{{chart}}",
+  									{% endfor %}];
+  console.log(charts);
+	for (i=0;charts.length; i++){
+    console.log(i);
+    //create a context for given element
+		var ctx = document.getElementById(i)
+    var chart_name = charts[i];
+    console.log(chart_name);
+    var data = {
+    	//passin labels as label object from views
+    	labels:[{% for label in insights %}
+                      "{{label}}",
+                  {% endfor %}],
+    	datasets:[{
+    		label:"Raw Score",
+    		data: [{% for item in raw_scores %}
+                          {{item}},
+                        {% endfor %}],
+    		fill:true,
+    		backgroundColor:"rgba(255, 99, 132, 0.2)",
+    		borderColor:"rgb(255, 99, 132)",
+    		pointBackgroundColor:"rgb(255, 99, 132)",
+    		pointBorderColor:"#fff",
+    		pointHoverBackgroundColor:"#fff",
+    		pointHoverBorderColor:"rgb(255, 99, 132)"},
+    		{
+    			label:"Percentile",
+    			data:[{% for item in percentiles %}
+    	                      {{item}},
+    	                    {% endfor %}],
+    			fill:true,
+    			backgroundColor:"rgba(54, 162, 235, 0.2)",
+    			borderColor:"rgb(54, 162, 235)",
+    			pointBackgroundColor:"rgb(54, 162, 235)",
+    			pointBorderColor:"#fff",
+    			pointHoverBackgroundColor:"#fff",
+    			pointHoverBorderColor:"rgb(54, 162, 235)"}
+    		]
+    	};
+    var options = {
+      	elements:{
+      		line:{
+      			tension:0,
+      			borderWidth:3
+      		}
+      	}
+      };
+
+  var chart = new Chart(ctx, {
+      type:"radar",
+      data: data,
+      options: options
+      });
+  }
+}
+
+chartGeneration({{insights|tojson}})
+</script>
+
+{% endblock %}

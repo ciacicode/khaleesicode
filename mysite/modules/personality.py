@@ -1,4 +1,5 @@
 __author__= 'ciacicode'
+# -*- coding: utf-8 -*-
 from flask_wtf import Form
 from mysite.configs.khal_config import Config
 from wtforms import SubmitField, TextAreaField
@@ -31,7 +32,7 @@ def get_personality_insights(profile):
 
 def generate_data(insights, category='needs'):
     """
-    personality_insights: as json from watson
+    insights: as json from watson
     category: one between needs (default), consumption_preferences, values, personality
     returns data: ready for chart display
     """
@@ -41,11 +42,53 @@ def generate_data(insights, category='needs'):
     labels = list()
     raw_scores = list()
     percentiles = list()
-    for dimension in data:
-        #create array of data
-        labels.append(dimension['name'])
-        raw_scores.append(dimension['raw_score'])
-        percentiles.append(dimension['percentile'])
+    try:
+        for dimension in data:
+            #create array of data
+            labels.append(dimension['name'])
+            raw_scores.append(dimension['raw_score'])
+            percentiles.append(dimension['percentile'])
+    except KeyError as ke:
+        print ke
     #craft output data Structure
     chart_data = dict([('labels', labels), ('raw_scores', raw_scores), ('percentiles', percentiles)])
     return chart_data
+
+def generate_all_data(insights):
+    """
+    insights: as json from watson
+    returns an object containing data for each dimension and hence chart
+    """
+    all_data = dict()
+    try:
+        for dimension in insights.keys():
+            if dimension in ['warnings','word_count','processed_language', 'consumption_preferences']:
+                #we don't care
+                continue
+            else:
+                #it's a dimension we want
+                chart_data = generate_data(insights,dimension)
+                all_data[dimension] = chart_data
+    #all data is ready
+    except IndexError as ie:
+        print ie
+    return all_data
+
+def generate_config():
+    primary = {
+        'fill': 'True',
+        'backgroundColor':'rgba(255, 99, 132, 0.2)',
+        'borderColor':'rgb(255, 99, 132)',
+        'pointBackgroundColor': 'rgb(255, 99, 132)',
+        'pointBorderColor': '#fff',
+        'pointHoverBackgroundColor':'#fff',
+        'pointHoverBorderColor':'rgb(255, 99, 132)'}
+    secondary = {
+        'fill':'True',
+        'backgroundColor':'rgba(54, 162, 235, 0.2)',
+        'borderColor':'rgb(54, 162, 235)',
+        'pointBackgroundColor':'rgb(54, 162, 235)',
+        'pointBorderColor':'#fff',
+        'pointHoverBackgroundColor':'#fff',
+        'pointHoverBorderColor':'rgb(54, 162, 235)'
+    }
