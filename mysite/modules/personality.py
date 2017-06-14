@@ -36,23 +36,27 @@ def generate_data(insights, category='needs'):
     category: one between needs (default), consumption_preferences, values, personality
     returns data: ready for chart display
     """
-    #category
-    data = insights[category]
-    #generate dimensions of each category to be used as labels
-    labels = list()
-    raw_scores = list()
-    percentiles = list()
     try:
+    #category
+        data = insights[category]
+        #generate dimensions of each category to be used as labels
+        raw_scores = list()
+        percentiles = list()
+        labels = list()
+
         for dimension in data:
             #create array of data
             labels.append(dimension['name'])
             raw_scores.append(dimension['raw_score'])
             percentiles.append(dimension['percentile'])
+        #craft output data Structure
+        chart_data = dict([('labels', labels), ('raw_scores', raw_scores), ('percentiles', percentiles)])
+        return chart_data
     except KeyError as ke:
         print ke
-    #craft output data Structure
-    chart_data = dict([('labels', labels), ('raw_scores', raw_scores), ('percentiles', percentiles)])
-    return chart_data
+    except TypeError as te:
+        print te
+
 
 def generate_all_data(insights):
     """
@@ -60,35 +64,12 @@ def generate_all_data(insights):
     returns an object containing data for each dimension and hence chart
     """
     all_data = dict()
-    try:
-        for dimension in insights.keys():
-            if dimension in ['warnings','word_count','processed_language', 'consumption_preferences']:
-                #we don't care
-                continue
-            else:
-                #it's a dimension we want
-                chart_data = generate_data(insights,dimension)
-                all_data[dimension] = chart_data
-    #all data is ready
-    except IndexError as ie:
-        print ie
+    for dimension in insights.keys():
+        if dimension in ['warnings','word_count','processed_language', 'consumption_preferences', 'personality']:
+            #we don't care
+            continue
+        else:
+            #it's a dimension we want
+            chart_data = generate_data(insights,dimension)
+            all_data[dimension] = chart_data
     return all_data
-
-def generate_config():
-    primary = {
-        'fill': 'True',
-        'backgroundColor':'rgba(255, 99, 132, 0.2)',
-        'borderColor':'rgb(255, 99, 132)',
-        'pointBackgroundColor': 'rgb(255, 99, 132)',
-        'pointBorderColor': '#fff',
-        'pointHoverBackgroundColor':'#fff',
-        'pointHoverBorderColor':'rgb(255, 99, 132)'}
-    secondary = {
-        'fill':'True',
-        'backgroundColor':'rgba(54, 162, 235, 0.2)',
-        'borderColor':'rgb(54, 162, 235)',
-        'pointBackgroundColor':'rgb(54, 162, 235)',
-        'pointBorderColor':'#fff',
-        'pointHoverBackgroundColor':'#fff',
-        'pointHoverBorderColor':'rgb(54, 162, 235)'
-    }

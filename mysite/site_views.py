@@ -89,16 +89,21 @@ def logout():
 
 @app.route('/personality', methods=['GET','POST'])
 def personality():
-    from modules.personality import Profile, get_personality_insights, generate_all_data
+    from modules.personality import Profile, get_personality_insights, generate_all_data, generate_data
     error = None
     form = Profile(request.form)
     if form.validate_on_submit():
         # handle user input
         profile_text = (request.form['profile']).encode('utf-8')
         #pass the profile to ibm watson api
-        all_data = get_personality_insights(profile_text)
+        response = get_personality_insights(profile_text)
         #pass the insights to the chart generating function
-        insights = generate_all_data(all_data)
+        insights = generate_all_data(response)
+        #generate one chart at a time
+        print insights
+        #needs = generate_data(insights,'needs')
+        #personality = generate_data(insights,'personality')
+        #values = generate_data(insights,'values')
         return render_template('personality_result.html', form=form, error=error, insights=insights)
     elif request.method == 'GET':
         return render_template('personality.html', form=form, error=error)
