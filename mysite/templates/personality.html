@@ -10,15 +10,15 @@
 			{% endif %}
 			{{form.csrf_token}}
 			{{form.profile(rows='800',cols='150')}}
-			{{form.submit}}
+			{{form.submit(class="button-primary")}}
 		</section>
 		<p>Powered by IBM Watson Personality Insights</p>
 	</form>
 </section>
 <section>
-	<div class="row">
-		<div class="two-thirds column"> {% block radar_chart %} {% endblock %}</div>
-	</div>
+
+{% block radar_chart %} {% endblock %}
+
 </section>
 
 {% endblock %}

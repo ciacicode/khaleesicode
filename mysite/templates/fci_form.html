@@ -12,19 +12,19 @@
 			{% endif %}
 			{{form.csrf_token}}
 			{{form.postcode}}
-			{{form.submit}}
+			{{form.submit(class="button-primary")}}
 		</section>
-	</form>	
-</section> 
+	</form>
+</section>
 
 {% endblock %}
 
 {% block result %}
-	
+
 	<section>
-		<h4>{{result}}</h4>	
+		<h4>{{result}}</h4>
 	</section>
-	
+
 {% endblock %}
 
 {% block map %}

@@ -65,7 +65,7 @@ def generate_all_data(insights):
     """
     all_data = dict()
     for dimension in insights.keys():
-        if dimension in ['warnings','word_count','processed_language', 'consumption_preferences', 'personality']:
+        if dimension in ['warnings','word_count','processed_language', 'consumption_preferences']:
             #we don't care
             continue
         else:

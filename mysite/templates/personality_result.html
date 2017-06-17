@@ -1,15 +1,23 @@
 {% extends 'personality.html' %}
 {% block radar_chart %}
 
-<div id="charts" class="container">
+
+
   <div class="row">
     <div class="four columns">
+        <h3>Needs</h3>
 			<canvas id="needs" width=100% height=100%></canvas>
+    </div>
+    <div class="four columns">
+      <h3>Values</h3>
+      <canvas id="values" width=100% height=100%></canvas>
 		</div>
-		<div class="four columns">
-				<canvas id="values" width=100% height=100%></canvas>
+    <div class="four columns">
+      <h3>Personality</h3>
+      <canvas id="personality" width=100% height=100%></canvas>
 		</div>
-</div>
+	</div>
+
 
 <script>
 //options for all charts
