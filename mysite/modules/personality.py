@@ -5,7 +5,6 @@ from mysite.configs.khal_config import Config
 from wtforms import SubmitField, TextAreaField
 from watson_developer_cloud import PersonalityInsightsV3
 import json
-import pdb
 
 
 #class for Profile input form
