@@ -2,17 +2,37 @@ __author__ = 'ciacicode'
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, date
 from mysite.configs.khal_config import Config
 from mysite.modules import blog
 from flask_wtf import Form
 from wtforms import StringField, validators, SubmitField
 import re
 import translitcodec
+import pdb
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
+
+class ExternalCall(db.Model):
+    """
+        Defines the columns that will get us the count of external calls done
+        to a specific api
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    service = db.Column(db.String(10))
+    timestamp = db.Column(db.DateTime, index=True)
+
+    def __init__(self, service, timestamp=datetime.utcnow()):
+        self.service = service
+        # augment a specific entry
+        if timestamp is None:
+            timestamp = datetime.utcnow()
+        self.timestamp = timestamp
+
+    def __repr__(self):
+        return 'Total calls for %s are %f' % (self.service, self.count)
 
 
 class Locations(db.Model):
@@ -126,6 +146,44 @@ def slugify(text, delim=u'-'):
 
 
 def add_blog_post(title, text):
+    """
+    Adds a blogpost to the blogpost database
+    """
     post = Entries(title,text)
     db.session.add(post)
+    db.session.commit()
+
+def add_call(service, timestamp=datetime.utcnow()):
+    """
+    Adds a call record to the External Call table
+    """
+    call = ExternalCall(service, timestamp)
+    db.session.add(call)
+    db.session.commit()
+
+def get_total_calls(service, from_date, to_date = date.today()):
+    """
+    Gets the total calls done for a service at any given time
+    """
+    #set defailt total
+    total = "Could not find total"
+    #get situation right now
+    today = date.today()
+    day = today.day
+    year = today.year
+    month = today.month
+    if from_date is None:
+        if day is 1:
+            #this is the first of the month
+            from_date = today
+        else:
+            # it is not the first of the month
+            from_date = today.replace(day=1)
+    total = ExternalCall.query.filter(ExternalCall.timestamp <= to_date).filter(ExternalCall.timestamp >= from_date).count()
+    return total
+
+def clear_external_data():
+    meta = db.metadata
+    print 'Clear ExternalCall table'
+    ExternalCall.query.filter(ExternalCall.service=="watson").delete()
     db.session.commit()

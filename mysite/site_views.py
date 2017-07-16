@@ -99,14 +99,10 @@ def personality():
         response = get_personality_insights(profile_text)
         #pass the insights to the chart generating function
         insights = generate_all_data(response)
-        #generate one chart at a time
-        print insights
-        #needs = generate_data(insights,'needs')
-        #personality = generate_data(insights,'personality')
-        #values = generate_data(insights,'values')
+
         return render_template('personality_result.html', form=form, error=error, insights=insights)
     elif request.method == 'GET':
         return render_template('personality.html', form=form, error=error)
     else:
-        error = 'Enter valid text and not junj'
+        error = 'Enter valid text and not junk'
         return render_template('personality.html', form=form, error=error)

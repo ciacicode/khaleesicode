@@ -4,8 +4,10 @@ from flask_wtf import Form
 from mysite.configs.khal_config import Config
 from wtforms import SubmitField, TextAreaField
 from watson_developer_cloud import PersonalityInsightsV3
+from mysite.modules.db_models import get_total_calls, add_call
+from datetime import datetime, date
 import json
-
+import pdb
 
 #class for Profile input form
 class Profile(Form):
@@ -16,15 +18,33 @@ class Profile(Form):
 def get_personality_insights(profile):
     """
     profile: text input
-    insights: json output
+    returns raw data from watson personality api
+    adds calls to database to track service usage
     """
     personality_insights = PersonalityInsightsV3(
         version='2016-10-20',
         username=Config.WATSON['username'],
         password=Config.WATSON['password'])
-    personality = personality_insights.profile(profile,
-                                               content_type='text/plain;charset=utf-8',
-                                               raw_scores=True, consumption_preferences=True)
+    #check if we still have enough calls
+    today = date.today()
+    year = today.year
+    month = today.month
+    service = 'watson'
+    from_date = today.replace(day=1) # start of this month
+    print from_date
+    calls_done = get_total_calls(service, from_date)
+    print "Total calls done are: " + str(calls_done)
+    calls_available = (Config.WATSON['limit'] - calls_done)
+    print "Available calls are: " + str(calls_available)
+    #default message is error
+    personality = {"Error message" : "Limit of calls for " + service + " has been reached"}
+    if calls_available > 0:
+        # make the call to watson
+        personality = personality_insights.profile(profile,
+                                                   content_type='text/plain;charset=utf-8',
+                                                   raw_scores=True, consumption_preferences=True)
+        # add the call to the ExternalCalls table
+        add_call(service)
     #serialise to string and then to object
     result = json.loads(json.dumps(personality))
     return result

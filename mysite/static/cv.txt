@@ -1,0 +1,90 @@
+Product Manager at Media iQ Digital Ltd
+May 2016 - Present
+Media iQ develops products and insights for advertising, in particular I look after:
+- All data ingestion processes and platforms, may they be batch data ingestions or real time.
+- Development of proprietary tech to produce and enrich consumer data
+- Documentation best practices
+- API creation, maintenance and improvements with regards again to data ingestion, querying and in some
+ cases DSP activation
+Product Manager at Import.io
+August 2015 - March 2016 (7 months)
+Import.io is a web extraction business with an Enterprise and Free offering. It provides web data at scale
+ for Forbes 500 companies that know the price, product, reviews data is online. The data is collected via a
+ powerful platform and distributed and requested via a REST API.
+- I own the roadmap of the Enterprise API offering, translating the direction of the business and the feedback
+ of the clients into feature requirements. As a result:
+** Introduced a decentralised remote schema repository that reduces time to data from 3 to 1 week.
+** Launched a new dashboard for customers to log in and monitor basic stats about their data feed.
+** Developed a multidimensional framework to measure data quality.
+- I also conduct product/market fit research with existing clients and potential customers, I do so employing
+ my Python skills for quantitative research and for qualitative insights I focus on interviewing, talking to users
+ and customers.
+- I have conducted SaaS modelling on different scenarios and led requirement gathering for the introduction
+ of a recurring billing solution.
+Product/Project Manager at Privax Limited
+July 2013 - July 2015 (2 years)
+Privax is the company behind hidemyass.com, acquired by AVG technologies last may 2015. Hidemyass is a
+ proxy and VPN private connection provider.
+Page 2
+-I started as the sole project manager at Privax, owning both web and client pro jects for desktop and mobile
+ apps.
+- I set up a prioritization model and the standard for product acceptance criteria and soon I started to behave
+ as de facto product manager for those features and new products I was taking care of.
+- I co-product managed the first HMA! ProVPN app for Android on time and on budget (£45K) with inshore
+ development team and the first HMA! Pro Mac OSX app.
+- I moved to web applications and APIs, owning roadmap for hidemyass.com and its subdomains, liaising
+ with all sides of business (Marketing, Payments, Operations etc. ), in that endeavour I worked on new billing,
+ white label APIs, automated email campaign systems, user control panels (25% deterring of cancellation),
+ seo, new website redesign, internationalisation of the website (on time, 20% increase international traffic)
+ etc.
+Product Support Manager for Google Web Search at Google
+September 2011 - July 2013 (1 year 10 months)
+- I started at Google as a customer support community manager for the Italian market but soon moved to
+ become a Product Support Manager(PSM) taking care of all non-English speaking users of Web Search.
+- In my role I was working closely with a variety of Product Managers of different Web Search features,
+ researching bugs, new feature proposals, evaluating them and proposing those that fit strategy and user
+ impact to the Product Manager.
+- I owned all international Web Search pre and post launch sentiment analysis (i.e. Knowledge Graph).
+- I collaborated with international marketing and branding teams to release the international central userfacing
+repository of marketing material of Google Web Search: www.google.com/insidesearch, I helped
+ coordinate its translation and launch.
+- During my work as PSM I was leading a team of 9 specialists spread across geographies to implement
+ online help solutions to increase customer satisfaction of Google Web Search users (i.e. new forms, new help
+ articles, new forum features etc.)
+- I have managed and ideated the creation of a new, comprehensive Privacy self-help tool that was
+ implemented via proprietary Content Management System (ROI: 23%, 59% reduction of help tickets, 3x
+ more visits to answer pages that were linked from it.)
+- I was also a speaker at public events as a Web Search Product expert (i.e. Science Fairs)
+Consumer Operations Associate at Google
+May 2010 - August 2011 (1 year 3 months)
+Italian market specialist focused on the analysis and support of the Italian users of Web Search, Chrome,
+ Maps and Google Places.
+Business Analyst at SDG Consulting
+March 2010 - April 2010 (1 month)
+Requirement Analysis and Business Process Modeling for IT based Enterprise Knowledge Management
+ solutions - B2B
+Page 3
+Legal Function Intern at BNL BNP Paribas
+December 2009 - February 2010 (2 months)
+Formalization and diffusion of legal and administrative procedures within the bank.
+Extreme Blue Intern at IBM Global Services
+July 2009 - September 2009 (2 months)
+Technical and business model brainstorming, building the business case taking into account future revenue
+ and cost dynamics, Blueprint service design for user experience optimization for ICT healthcare solution
+Assistant Producer at Big Spaceship
+May 2008 - September 2008 (4 months)
+- Budgeting (human, material, financial)
+- Project planning and status reporting for control, conceptual brainstorming
+- Improved billing compliance from 40% to 98%.
+Education
+Libera Università Internazionale degli Studi Sociali Guido Carli
+Master Degree in, Management of Innovation, 2006 - 2008
+Griffith College Dublin
+Dynamic Web Application Development, Computer Programming, Specific Applications, 2012 - 2013
+Activities and Societies: HTML 5 CSS2 & CSS3 JavaScript PHP MySQL Delivery of a web site with dynamic
+ functionality.
+Università degli Studi di Napoli 'Federico II'
+Laurea Triennale, Business Economics, 2003 - 2006
+Istituto Superiore Giovanni da Procida
+Perito Commerciale IGEA, Accounting, 1997 - 2002
+Activities and Societies: Highschool newspaper
