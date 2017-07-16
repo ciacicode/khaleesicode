@@ -2,7 +2,7 @@
 {% block homecontent %}
 <section xmlns="http://www.w3.org/1999/html">
 	 <header><h1>Welcome to Khaleesicode</h1></header><br>
-	 <p>This is a Flask site that I use to play around with Python code. I will create features, blogposts and applications as I go along. <a href="{{ url_for('fci_form') }}">FCI</a> is a silly app and <a href="{{ url_for('api_fci') }}">API</a> that shows the percentage of Fried Chicken Shops on all restaurants in a specific London Postcode. </p>
+	 <p>This is a Flask site that I use to play around with Python code. I will create features, blogposts and applications as I go along. </p>
 </section>
 <section>
     {% for post in paginated.items %}
@@ -18,6 +18,3 @@
 {% block homemedia %}
  <code>>>> python</code>
 {% endblock %}
-
-
-

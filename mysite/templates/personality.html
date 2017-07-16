@@ -3,7 +3,7 @@
 <section>
 	<header><h1>Discover your Personality</h1><br></header>
 	<form action="{{ url_for('personality')}}" method='POST'>
-		<p>Paste your CV here as text</p>
+		<p>Paste text on which you want the personality algorithm to run. Try it with a CV, a dump of tweets or social posts.</p>
 		<section>
 			{% if error %}
 			<p class="error"><strong>Error: </strong>{{error}}</p>
@@ -12,7 +12,7 @@
 			{{form.profile(rows='800',cols='150')}}
 			{{form.submit(class="button-primary")}}
 		</section>
-		<p>Powered by IBM Watson Personality Insights</p>
+		<p>Check what <a href="https://www.ibm.com/watson/developercloud/doc/personality-insights/models.html" target="_blank">personality models</a> mean.Powered by IBM Watson Personality Insights.</p>
 	</form>
 </section>
 <section>
