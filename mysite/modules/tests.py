@@ -127,8 +127,6 @@ class KhalTests(unittest.TestCase):
     #test get_personality_insights does not make call if we reached api limit
     def test_watson_call_check(self):
         #fill database with 1000 service calls
-        profile = "Lorem ipsum this is a fake piece of text for the watson api. \
-        i guess it needs to be long enough to be plausibe but for the rest... that's it."
         with app.app_context():
             #fill database
             start_timestamp = datetime(2017,07,3,10,20,22)

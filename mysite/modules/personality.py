@@ -30,9 +30,8 @@ def get_personality_insights(profile):
     year = today.year
     month = today.month
     service = 'watson'
-    from_date = today.replace(day=1) # start of this month
-    print from_date
-    calls_done = get_total_calls(service, from_date)
+    calls_done = get_total_calls(service)
+    print calls_done
     print "Total calls done are: " + str(calls_done)
     calls_available = (Config.WATSON['limit'] - calls_done)
     print "Available calls are: " + str(calls_available)

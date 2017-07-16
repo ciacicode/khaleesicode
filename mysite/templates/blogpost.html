@@ -1,0 +1,138 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Blogpost</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="Maria Cerase">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  <h3>Controlling cache and external API access</h3>
+  <p>With the latest addition to khaleesicode I introduced /personality, a utility to let you see how IBM Watson personality insights interpret the text given and draws a personality profile for you.</p>
+  <p>Developing this feature involved learning to use: <br>
+  <ul>
+    <li><a href="http://www.chartjs.org/" target="_blank">Chart.js</a></li>
+    <li><a href="https://realpython.com/blog/python/caching-external-api-requests/" target="_blank">Requests Cache</a></li>
+    <li><a href="http://flask-sqlalchemy.pocoo.org/2.1/" target="_blank">Flask SQL Alchemy</a></li>
+    <li>My old tests</li>
+  </ul></p>
+  <p>The most important side of this feature is the control I had to enforce before publishing it. I needed a request cache system, so I wouldn't do the same request all over again, so I used the <code>requests-cache</code> package, I must say very easy to set up with Flask. Then I moved to the overall quantity control of the calls. IBM Watson ain't cheap and I don't want to incur in unexpected charges for the feature, so before making this public I needed a way to check the <a href="https://www.ibm.com/watson/developercloud/personality-insights.html" target="_blank">IBM Watson personality API</a> calls don't exceed my set limit.<br></p>
+  <p>First I created a new table in my database: something generic that could in the future hold information on more than the calls to Watson: <br></p>
+  <h5>The Model</h5>
+  <p><pre><code>
+    class ExternalCall(db.Model):
+      """
+          Defines the columns that will get us the count of external calls done
+          to a specific api
+      """
+      id = db.Column(db.Integer, primary_key=True)
+      service = db.Column(db.String(10))
+      timestamp = db.Column(db.DateTime, index=True)
+
+      def __init__(self, service, timestamp=datetime.utcnow()):
+          self.service = service
+          # augment a specific entry
+          if timestamp is None:
+              timestamp = datetime.utcnow()
+          self.timestamp = timestamp
+
+      def __repr__(self):
+          return 'Total calls for %s are %f' % (self.service, self.count)</code></pre></p>
+    <p>I am still not happy with this model, as I don't know if I should venture in creating class specific methods, to make things tidier and more object oriented, rather than writing them as separate functions as I did for the <code>add_call</code> to the database or counting the amount of calls per service during the month with <code>get_total_calls</code>. The limit of calls per month is handled in my general config file.</p>
+    <h5>Database operations</h5>
+    <p><pre><code>
+      def add_call(service, timestamp=datetime.utcnow()):
+          """
+          Adds a call record to the External Call table
+          """
+          call = ExternalCall(service, timestamp)
+          db.session.add(call)
+          db.session.commit()
+
+      def get_total_calls(service, from_date, to_date = date.today()):
+          """
+          Gets the total calls done for a service at any given time
+          """
+          #set defailt total
+          total = "Could not find total"
+          #get situation right now
+          today = date.today()
+          day = today.day
+          year = today.year
+          month = today.month
+          if from_date is None:
+              if day is 1:
+                  #this is the first of the month
+                  from_date = today
+              else:
+                  # it is not the first of the month
+                  from_date = today.replace(day=1)
+          total = ExternalCall.query.filter(ExternalCall.timestamp <= to_date).filter(ExternalCall.timestamp >= from_date).count()
+          return total
+      </code></pre></p>
+  <h5>The Tests</h5>
+  <p>This was the first feature I developed with tests in mind from the start. I did not want to <strong>REALLY</strong> reach the limit of calls to test if my failsafe function would work, so I created a test that would fill the database with loads of calls, and then <strong>BEFORE</strong> a new call would be done always check if there is still <em>money in the bank</em>.</p>
+  <p><pre><code>
+    ...
+    #test get_personality_insights does not make call if we reached api limit
+    def test_watson_call_check(self):
+        #fill database with 1000 service calls
+        with app.app_context():
+            #fill database
+            start_timestamp = datetime(2017,07,3,10,20,22)
+            print "Filling test database with many service calls"
+            for delta in range (0, 1000):
+                new_timestamp = start_timestamp + timedelta(minutes=3)
+                add_call('watson', timestamp=new_timestamp)
+            print "Testing that call limit is enforced"
+            ins = get_personality_insights(profile)
+            print ins
+            assert 'Error message' in ins, "Failed: call limit is not enforced"
+        #clear the test table now
+        clear_external_data()
+    </code></pre></p>
+    <p>The tests are calling the main <code>get_personality_insights</code> function that has a quick check of the database before truly doing the request. If there was no more room for calls an error would be returned. Now that I think about it I am not handling the display of the error... well that is for the next version.</p>
+    <p><pre><code>
+      def get_personality_insights(profile):
+          """
+          profile: text input
+          returns raw data from watson personality api
+          adds calls to database to track service usage
+          """
+          personality_insights = PersonalityInsightsV3(
+              version='2016-10-20',
+              username=Config.WATSON['username'],
+              password=Config.WATSON['password'])
+          #check if we still have enough calls
+          today = date.today()
+          year = today.year
+          month = today.month
+          service = 'watson'
+          from_date = today.replace(day=1) # start of this month
+          print from_date
+          calls_done = get_total_calls(service, from_date)
+          print "Total calls done are: " + str(calls_done)
+          calls_available = (Config.WATSON['limit'] - calls_done)
+          print "Available calls are: " + str(calls_available)
+          #default message is error
+          personality = {"Error message" : "Limit of calls for " + service + " has been reached"}
+          if calls_available > 0:
+              # make the call to watson
+              personality = personality_insights.profile(profile,
+                                                         content_type='text/plain;charset=utf-8',
+                                                         raw_scores=True, consumption_preferences=True)
+              # add the call to the ExternalCalls table
+              add_call(service)
+          #serialise to string and then to object
+          result = json.loads(json.dumps(personality))
+          return result
+      </code></pre></p>
+</body>
+</html>

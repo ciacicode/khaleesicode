@@ -161,7 +161,7 @@ def add_call(service, timestamp=datetime.utcnow()):
     db.session.add(call)
     db.session.commit()
 
-def get_total_calls(service, from_date, to_date = date.today()):
+def get_total_calls(service, to_date = datetime.utcnow()):
     """
     Gets the total calls done for a service at any given time
     """
@@ -169,17 +169,8 @@ def get_total_calls(service, from_date, to_date = date.today()):
     total = "Could not find total"
     #get situation right now
     today = date.today()
-    day = today.day
-    year = today.year
-    month = today.month
-    if from_date is None:
-        if day is 1:
-            #this is the first of the month
-            from_date = today
-        else:
-            # it is not the first of the month
-            from_date = today.replace(day=1)
-    total = ExternalCall.query.filter(ExternalCall.timestamp <= to_date).filter(ExternalCall.timestamp >= from_date).count()
+    from_date = today.replace(day=1) # start of this month
+    total = ExternalCall.query.filter(ExternalCall.timestamp <= to_date).filter(ExternalCall.timestamp >= from_date).filter(ExternalCall.service == service).count()
     return total
 
 def clear_external_data():
