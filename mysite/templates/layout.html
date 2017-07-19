@@ -42,8 +42,9 @@
         {% endif %}
     {% endwith %}
 </head>
-    <nav class="navbar">
+
         <div class="container">
+          <nav class="navbar">
             <ul class="navbar-list">
                 <li class="navbar-item"> <a class="navbar-link" href="{{ url_for('index') }}">Home</a></li>
                 <li class="navbar-item"> <a class="navbar-link" href="{{ url_for('fci_form') }}">FCI</a></li>
@@ -56,8 +57,9 @@
                 <li class="navbar-item"><a class="navbar-link" href="{{ url_for('logout') }}">Log out</a></li>
                 {% endif %}
             </ul>
+            </nav>
         </div>
-    </nav>
+
 
 
 <div class="container">

@@ -1,18 +1,35 @@
 {% extends "layout.html" %}
 {% block homecontent %}
 <section>
-    <h3>About</h3>
-    <p>My name is <a href="https://plus.google.com/+MariaCerase" target="_blank">Maria Cerase</a>, I am a product manager working in London's tech start-up scene and Khaleesicode is my geeky side.
-    I started to program only recently. In late
-    2014 I started studying computer science on <a href="https://edx.org" target="_blank">Edx</a> with CS50x a course by Harvardx.
-    The course was teaching C, and despite having passed 50% of the course I did not finish it. I took programming again, this
-    time with Python in early 2015 with MITx and that's when I fell in love with the language and programming. I finished on my own <a href="https://courses.edx.org/courses/MITx/6.00.1x_5/1T2015/info">6.00.1x</a> and completed with a certification, <a href="https://courses.edx.org/courses/course-v1:MITx+6.00.2x_4+3T2015/info">6.00.2x</a> that focuses on Data Science and computational thinking.
-    </p>
-    <p>Data, science and programming are at the core of my motivation for continuous study and improvement.</p>
+    <div class="row">
+      <div class="twelve columns">
+        <div class="three columns">
+          <h3>About me</h3>
+      </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="twelve columns">
+        <div class="four columns">
+        <img border= "0" width="250" height="250" src="{{ url_for('static', filename='images/throne_round.png')}}">
+      </div>
+        <div class="eight columns">
+          <p>My name is <a href="https://plus.google.com/+MariaCerase" target="_blank">Maria Cerase</a>, I am a product manager working in London's tech start-up scene and Khaleesicode is my geeky side.
+          I started programming in late 2014 when I attended an online version of <a href="https://edx.org" target="_blank">Edx</a> CS50 by Harvard.
+          The course was teaching C, and despite having passed 50% of the course I did not finish it. I took programming again in 2015, this
+          time with Python with MITx and that's when I fell in love with the language and programming. I finished on my own <a href="https://courses.edx.org/courses/MITx/6.00.1x_5/1T2015/info">6.00.1x</a> and completed with a certification, <a href="https://courses.edx.org/courses/course-v1:MITx+6.00.2x_4+3T2015/info">6.00.2x</a> that focuses on Data Science and computational thinking.
+          </p>
+          <p>Data, science and programming are at the core of my motivation for continuous study and improvement.</p>
+      </div>
+      </div>
+
+    </div>
+
     <div class="row">
         <div class="twelve columns">
-            <div class="two columns offset-by-five">
+            <div class="three columns offset-by-four">
                 <p><a href="https://github.com/ciacicode"><img border="0" src="{{ url_for('static', filename='images/GitHub-Mark-64px.png') }}" width="32" height="32"></a>   <a href="http://uk.linkedin.com/in/mariacerase"><img border="0" src="{{ url_for('static', filename='images/In-Black-34px-R.png') }}" width="38" height="32"></a>
+                  <a href="https://medium.com/@SuperMaryCherry"><img border="0" width="32" height="32" src="{{ url_for('static', filename='images/medium_32.png')}}"></a>
     </p>
             </div>
         </div>

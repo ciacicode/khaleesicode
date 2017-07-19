@@ -32,7 +32,7 @@ def fci_form():
     elif request.method == 'GET':
         return render_template('fci_form.html', form=form, map=div, script=script)
     else:
-        error = 'Enter a valid postcode'
+        error = form.errors['postcode'][0]
         return render_template('fci_form.html', form=form, error=error, map=div, script=script)
 
 
@@ -104,5 +104,6 @@ def personality():
     elif request.method == 'GET':
         return render_template('personality.html', form=form, error=error)
     else:
-        error = 'Enter valid text and not junk'
+        print form.errors
+        error = form.errors['profile'][0]
         return render_template('personality.html', form=form, error=error)

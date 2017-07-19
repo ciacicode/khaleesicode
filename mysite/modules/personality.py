@@ -2,7 +2,7 @@ __author__= 'ciacicode'
 # -*- coding: utf-8 -*-
 from flask_wtf import Form
 from mysite.configs.khal_config import Config
-from wtforms import SubmitField, TextAreaField
+from wtforms import SubmitField, TextAreaField, validators, ValidationError
 from watson_developer_cloud import PersonalityInsightsV3
 from mysite.modules.db_models import get_total_calls, add_call
 from datetime import datetime, date
@@ -11,8 +11,17 @@ import pdb
 
 #class for Profile input form
 class Profile(Form):
-    profile = TextAreaField('profile')
+    profile = TextAreaField('profile', [validators.Required()])
     submit = SubmitField('Calculate')
+
+    def validate_profile(form, field):
+        """
+        Checks there are min 120 words
+        """
+        profile = field.data
+        words = profile.split(" ")
+        if len(words) < 120:
+            raise ValidationError('Profile must have more than 120 words. Try harder!')
 
 
 def get_personality_insights(profile):
