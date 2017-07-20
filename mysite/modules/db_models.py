@@ -6,10 +6,10 @@ from datetime import datetime, date
 from mysite.configs.khal_config import Config
 from mysite.modules import blog
 from flask_wtf import Form
-from wtforms import StringField, validators, SubmitField
+from wtforms import StringField, validators, SubmitField, ValidationError
 import re
 import translitcodec
-import pdb
+from ukpostcodeutils import validation
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -132,6 +132,16 @@ class PostcodeInput(Form):
     postcode = StringField('postcode', [validators.DataRequired(message=u"Where is your postcode?"),
                                         validators.Length(min=2, max=10)])
     submit = SubmitField('Submit')
+
+    def validate_postcode(form, field):
+        """
+        Checks the uk postcode is valid
+        """
+        postcode = field.data
+        if validation.is_valid_postcode(postcode):
+                pass
+        else:
+            raise ValidationError('The postcode provided is not a valid uk postcode')
 
 
 def slugify(text, delim=u'-'):
