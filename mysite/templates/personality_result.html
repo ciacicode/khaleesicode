@@ -1,24 +1,28 @@
-{% extends 'personality.html' %}
+{% extends 'layout.html' %}
 {% block radar_chart %}
 
-
+<div class="row">
+  <div class= "twelve columns offset-by-eleven">
+<a href="https://twitter.com/share?url=https://wwww.khaleesicode.com?call_id={{call_id}}" class="twitter-share-button" data-text="Check out my personality insights" data-via="SuperMaryCherry" data-hashtags="khaleesicode" data-show-count="false" >Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+</div>
 
   <div class="row">
-    <div class="six columns">
+    <div class="six columns offset-by-three">
         <h3 style="text-align: center;">Needs</h3>
-			<canvas id="needs" width=100% height=100%></canvas>
+			<canvas id="needs"></canvas>
     </div>
 	</div>
   <div class="row">
-    <div class="six columns">
+    <div class="six columns offset-by-three">
       <h3 style="text-align: center;">Values</h3>
-      <canvas id="values" width=100% height=100%></canvas>
+      <canvas id="values" ></canvas>
     </div>
   </div>
   <div class="row">
-    <div class="six columns">
+    <div class="six columns offset-by-three">
       <h3 style="text-align: center;">Personality</h3>
-      <canvas id="personality" width=100% height=100%></canvas>
+      <canvas id="personality" ></canvas>
     </div>
   </div>
 

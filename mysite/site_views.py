@@ -87,20 +87,29 @@ def logout():
     flash('You were logged out')
     return redirect(url_for('show_entries'))
 
+
 @app.route('/personality', methods=['GET','POST'])
 def personality():
     from modules.personality import Profile, get_personality_insights, generate_all_data, generate_data
+    from mysite.modules.db_models import get_personality
     error = None
     form = Profile(request.form)
     if form.validate_on_submit():
         # handle user input
         profile_text = (request.form['profile']).encode('utf-8')
         #pass the profile to ibm watson api
-        response = get_personality_insights(profile_text)
+        response, call_id = get_personality_insights(profile_text)
         #pass the insights to the chart generating function
         insights = generate_all_data(response)
-
         return render_template('personality_result.html', form=form, error=error, insights=insights)
+    elif 'call_id' in request.args and request.method == 'GET':
+        #this is a call for an existing result
+        call_id = request.args['call_id']
+        #get response from database
+        response = get_personality(call_id)
+        #turn response in a json object that the template can render
+        insights = generate_all_data(response)
+        return render_template('personality_result.html', error = error, insights=insights, call_id = call_id)
     elif request.method == 'GET':
         return render_template('personality.html', form=form, error=error)
     else:

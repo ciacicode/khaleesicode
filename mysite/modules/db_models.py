@@ -10,6 +10,8 @@ from wtforms import StringField, validators, SubmitField, ValidationError
 import re
 import translitcodec
 from ukpostcodeutils import validation
+import json
+import pdb
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -23,13 +25,16 @@ class ExternalCall(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     service = db.Column(db.String(10))
     timestamp = db.Column(db.DateTime, index=True)
+    response = db.Column(db.String())
+    #add id for sharing
 
-    def __init__(self, service, timestamp=datetime.utcnow()):
+    def __init__(self, service, response, timestamp=datetime.utcnow()):
         self.service = service
         # augment a specific entry
         if timestamp is None:
             timestamp = datetime.utcnow()
         self.timestamp = timestamp
+        self.response = json.dumps(response)
 
     def __repr__(self):
         return 'Total calls for %s are %f' % (self.service, self.count)
@@ -163,13 +168,26 @@ def add_blog_post(title, text):
     db.session.add(post)
     db.session.commit()
 
-def add_call(service, timestamp=datetime.utcnow()):
+def add_call(service, response, timestamp=datetime.utcnow()):
     """
     Adds a call record to the External Call table
     """
-    call = ExternalCall(service, timestamp)
+    #make sure to pass the sharing id
+    call = ExternalCall(service, response, timestamp)
     db.session.add(call)
+    #flush to get id
+    db.session.flush()
+    call_id = call.id
     db.session.commit()
+    return call_id
+
+def get_personality(call_id):
+    """
+    Gets a personality result response by querying the database
+    """
+    insights_object = ExternalCall.query.filter_by(id = call_id).first()
+    personality = insights_object.response
+    return json.loads(personality)
 
 def get_total_calls(service, to_date = datetime.utcnow()):
     """

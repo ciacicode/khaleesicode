@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-0.9.0.min.css">
     <script src="https://cdn.pydata.org/bokeh/release/bokeh-0.9.0.min.js"></script>
     <link rel="canonical" href="https://www.khaleesicode.com/" itemprop="url">
+    <!-- materialize icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -85,11 +88,22 @@
         {% block map %}{% endblock %}
     </div>
 </div>
-<!--personality page-->
+<!--personality input page-->
 <div class="container">
     <div class="row">
         <div class="twelve columns">{% block personality %} {% endblock %}</div>
     </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="twelve columns">
+      <section>
+
+      {% block radar_chart %} {% endblock %}
+
+      </section>
+    </div>
+  </div>
 </div>
 </body>
     <!--bokeh script for chart-->

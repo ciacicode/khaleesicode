@@ -129,11 +129,12 @@ class KhalTests(unittest.TestCase):
         #fill database with 1000 service calls
         with app.app_context():
             #fill database
+            fake_resp = {'response': 'this is a test response'}
             start_timestamp = datetime(2017,07,3,10,20,22)
             print "Filling test database with many service calls"
             for delta in range (0, 1000):
                 new_timestamp = start_timestamp + timedelta(minutes=3)
-                add_call('watson', timestamp=new_timestamp)
+                add_call('watson',fake_resp, timestamp=new_timestamp)
             print "Testing that call limit is enforced"
             ins = get_personality_insights(profile)
             print ins

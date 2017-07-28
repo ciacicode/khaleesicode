@@ -52,10 +52,11 @@ def get_personality_insights(profile):
                                                    content_type='text/plain;charset=utf-8',
                                                    raw_scores=True, consumption_preferences=True)
         # add the call to the ExternalCalls table
-        add_call(service)
+        call_id = add_call(service, personality)
+
     #serialise to string and then to object
     result = json.loads(json.dumps(personality))
-    return result
+    return result, call_id
 
 def generate_data(insights, category='needs'):
     """
