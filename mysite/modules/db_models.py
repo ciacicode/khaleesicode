@@ -185,9 +185,13 @@ def get_personality(call_id):
     """
     Gets a personality result response by querying the database
     """
+    error = "{'error': 'Khaleesicode has no memory of this event.'}'"
     insights_object = ExternalCall.query.filter_by(id = call_id).first()
-    personality = insights_object.response
-    return json.loads(personality)
+    if insights_object is None:
+        return json.loads(error)
+    else:
+        personality = insights_object.response
+        return json.loads(personality)
 
 def get_total_calls(service, to_date = datetime.utcnow()):
     """

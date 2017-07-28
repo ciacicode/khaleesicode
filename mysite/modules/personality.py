@@ -7,7 +7,6 @@ from watson_developer_cloud import PersonalityInsightsV3
 from mysite.modules.db_models import get_total_calls, add_call
 from datetime import datetime, date
 import json
-import pdb
 
 #class for Profile input form
 class Profile(Form):

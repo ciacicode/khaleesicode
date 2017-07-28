@@ -93,6 +93,7 @@ def personality():
     from modules.personality import Profile, get_personality_insights, generate_all_data, generate_data
     from mysite.modules.db_models import get_personality
     error = None
+    insights = 'default'
     form = Profile(request.form)
     if form.validate_on_submit():
         # handle user input
@@ -108,7 +109,10 @@ def personality():
         #get response from database
         response = get_personality(call_id)
         #turn response in a json object that the template can render
-        insights = generate_all_data(response)
+        if 'error' in response.keys():
+            error = response['error']
+        else:
+            insights = generate_all_data(response)
         return render_template('personality_result.html', error = error, insights=insights, call_id = call_id)
     elif request.method == 'GET':
         return render_template('personality.html', form=form, error=error)
