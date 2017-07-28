@@ -8,34 +8,44 @@
 </div>
 
   <div class="row">
-    <div class="six columns offset-by-three">
-        <h3 style="text-align: center;">Needs</h3>
-			<canvas id="needs"></canvas>
+    <div class="twelve columns">
+        <a href="https://www.ibm.com/watson/developercloud/doc/personality-insights/models.html#outputNeeds" target="_blank"><h3 style="text-align: center;">Needs</h3></a>
+        <div class="row">
+          <div class="six columns offset-by-three">
+			      <canvas id="needs"></canvas>
+        </div>
     </div>
 	</div>
+</div>
   <div class="row">
-    <div class="six columns offset-by-three">
-      <h3 style="text-align: center;">Values</h3>
+    <div class="twelve columns">
+    <a href="https://www.ibm.com/watson/developercloud/doc/personality-insights/models.html#outputValues" target="_blank">  <h3 style="text-align: center;">Values</h3></a>
+    <div class="row">
+      <div class="six columns offset-by-three">
       <canvas id="values" ></canvas>
     </div>
   </div>
+</div>
+</div>
   <div class="row">
-    <div class="six columns offset-by-three">
-      <h3 style="text-align: center;">Personality</h3>
+    <div class="twelve columns">
+      <a href="https://www.ibm.com/watson/developercloud/doc/personality-insights/models.html#outputBigFive" target="_blank"><h3 style="text-align: center;">Personality</h3></a>
+      <div class="row">
+        <div class="six columns offset-by-three">
       <canvas id="personality" ></canvas>
     </div>
+    </div>
   </div>
+</div>
 
 
 <script>
 //options for all charts
-  console.log("Insights object: ", {{insights|tojson}});
+
   var charts = Object.keys({{insights|tojson}});
-  console.log("Charts:", charts);
-  console.log("Charts length: ", String(charts.length));
+
 	for (i=0; i< charts.length; i++){
-    console.log(charts[i]);
-    console.log(String(i));
+
     //create a context for given category and element
 		var ctx = document.getElementById(charts[i])
     var chart_name = charts[i];
