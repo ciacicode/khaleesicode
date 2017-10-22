@@ -59,8 +59,20 @@
                 {% else %}
                 <li class="navbar-item"><a class="navbar-link" href="{{ url_for('logout') }}">Log out</a></li>
                 {% endif %}
+
             </ul>
             </nav>
+        </div>
+
+        <div class="row">
+          <div class="two columns offset-by-one">
+              <div data-network="twitter" class="st-custom-button">Twitter</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="two columns offset-by-one">
+              <div data-network="facebook" class="st-custom-button">Facebook</div>
+          </div>
         </div>
 
 
@@ -119,4 +131,5 @@
       ga('send', 'pageview');
    </script>
     <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#product=custom-share-buttons"></script>
 </html>

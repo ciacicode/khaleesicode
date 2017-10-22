@@ -12,10 +12,62 @@ import translitcodec
 from ukpostcodeutils import validation
 import json
 import pdb
+import pycountry
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
+
+
+class Bottom(db.Model):
+    """
+        Bottom
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    product_type = db.Column(db.String(4))
+    last_updated = db.Column(db.DateTime)
+    gender = db.Column(db.String(4))
+    category = db.Column(db.String(4))
+    waist_hip = db.Column(db.Float())
+    brand = db.Columns(db.String(50))
+    it = db.Columns(db.Integer())
+    uk = db.Columns(db.Integer())
+    us = db.Columns(db.Integer())
+    waist = db.Columns(db.String())
+    hip = db.Columns(db.String())
+    numeric = db.Columns(db.Integer)
+    std = db.Columns(db.String(10))
+    hashkey = db.Columns(db.String(40))
+
+    def __init__(self, product_type, gender,  brand, waist, hip, numeric=None, std=None,  it=None, uk=None, us=None, category=None, last_updated=datetime.utcnow()):
+        self.product_type = product_type
+        self.gender = gender
+        self.brand = brand
+        self.waist = waist
+        self.hip = hip
+        self.numeric = numeric
+        self.std = std
+        self.it = it
+        self.uk = uk
+        self.us = us
+        self.category = category
+        self.last_updated = last_updated
+        # get cm waist and hip
+        self.waist_hip = float(self.waist['cm'] / self.hip['cm'])
+        # generate hash
+        self.hashkey = gen_hash()
+
+    def gen_hash(self):
+        """
+            Generates hash key for a clothing item
+        """
+        hash_key = product_type + gender + 'w' + self.waist['cm'] + 'h' + self.hip['cm']
+        return hash_key
+
+
+    def __repr__(self):
+        return 'Bottom with hashkey %s, brand %s, it size, %d' % (self.hashkey, self.brand, self.it)
+
 
 class ExternalCall(db.Model):
     """

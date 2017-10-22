@@ -67,6 +67,7 @@ khal_config_prod.py
 config.cfg
 *.db
 *.csv
+*.ods
 
 
 
