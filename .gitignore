@@ -67,7 +67,9 @@ khal_config_prod.py
 config.cfg
 *.db
 *.csv
+*.csv#
 *.ods
+.~lock.bottomv001.csv#
 
 
 
