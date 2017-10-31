@@ -22,43 +22,48 @@ class Bottom(db.Model):
     """
         Bottom
     """
-    id = db.Column(db.Integer, primary_key=True)
     product_type = db.Column(db.String(4))
-    last_updated = db.Column(db.DateTime)
     gender = db.Column(db.String(4))
-    category = db.Column(db.String(4))
-    waist_hip = db.Column(db.Float())
-    brand = db.Column(db.String(50))
-    it = db.Column(db.Integer())
-    uk = db.Column(db.Integer())
-    us = db.Column(db.Integer())
     waist = db.Column(db.String())
     hip = db.Column(db.String())
-    manufaturer_sizes = db.Column(db.String())
-    std = db.Column(db.String())
-    hashkey = db.Column(db.String(40))
+    category = db.Column(db.String(4))
+    last_updated = db.Column(db.DateTime)
+    sizes = db.Column(db.String())
+    waist_hip = db.Column(db.Float())
+    hashkey = db.Column(db.String(40), primary_key=True)
 
     def __init__(self, bottom, last_updated=datetime.utcnow()):
         self.product_type = bottom['product_type']
         self.gender = bottom['gender']
         self.waist = bottom['waist']
         self.hip = bottom['hip']
-        self.std = bottom['std']
-        self.it = bottom['it']
-        self.uk = bottom['uk']
-        self.us = bottom['us']
         self.category = bottom['category']
         self.last_updated = last_updated
         # get cm waist and hip
-        self.waist_hip = float(self.waist['cm'] / self.hip['cm'])
+        self.sizes = bottom['sizes']
+        self.waist_hip = self.gen_waist_hip_ratio()
         # generate hash
-        self.hashkey = gen_hash()
+        self.hashkey = self.gen_hash()
+
+
+    def gen_waist_hip_ratio(self):
+        """
+            Generates waist to hip ratio from cm data
+        """
+        w = json.loads(self.waist)
+        h = json.loads(self.hip)
+        w_cm = float(w['cm'])
+        h_cm = float(h['cm'])
+        return w_cm/h_cm
 
     def gen_hash(self):
         """
             Generates hash key for a clothing item
         """
-        hash_key = product_type + gender + 'w' + self.waist['cm'] + 'h' + self.hip['cm']
+        waist = json.loads(self.waist)
+        hip = json.loads(self.hip)
+        hash_key = self.product_type + self.gender + 'w' + str(int(waist['cm'])) + 'h' + str(int(hip['cm']))
+        print hash_key
         return hash_key
 
 
