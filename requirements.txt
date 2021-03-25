@@ -84,7 +84,7 @@ pytest==2.6.4
 python-dateutil==2.4.2
 python-linkedin==4.1
 pytz==2015.4
-PyYAML==3.11
+PyYAML==5.4
 pyzmq==14.7.0
 redis==2.10.3
 redis-py-cluster==1.0.0
