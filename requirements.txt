@@ -110,7 +110,7 @@ translitcodec==0.4.0
 ujson==1.33
 uk-postcode-utils==1.0
 unicodecsv==0.9.4
-urllib3==1.21.1
+urllib3==1.26.5
 watson-developer-cloud==0.26.0
 Werkzeug==0.10.4
 WTForms==2.0.2
